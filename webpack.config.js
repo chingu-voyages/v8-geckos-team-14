@@ -1,4 +1,6 @@
 const HtmlWebPackPlugin = require("html-webpack-plugin");
+const CopyPlugin = require('copy-webpack-plugin');
+
 module.exports = {
   module: {
     rules: [
@@ -22,7 +24,12 @@ module.exports = {
   plugins: [
     new HtmlWebPackPlugin({
       template: "./src/index.html",
-      filename: "./index.html"
-    })
+      filename: "./popup.html"
+    }),
+    // Copies files needed by chrome to dist folder
+    new CopyPlugin([
+      { from: 'manifest.json', to: '' },
+      { from: 'src/newtab.js', to: '' }
+    ]),
   ]
 };

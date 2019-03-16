@@ -1,0 +1,24 @@
+{
+  "manifest_version": 2,
+  "name": "MomenDev",
+  "version": "0.0.0.1",
+  "description": "Momendev - Momentum for developers",
+  "browser_action": {},
+  "chrome_url_overrides": {
+    "newtab": "popup.html"
+  },
+  "background": {
+    "scripts": [
+      "newtab.js"
+    ],
+    "persistent": true
+  },
+  "permissions": ["tabs", "http://*/*"],
+  "content_scripts": [
+    {
+      "matches": ["*://*/*"],
+      "css": [],
+      "js": ["main.js"]
+    }
+  ]
+}
