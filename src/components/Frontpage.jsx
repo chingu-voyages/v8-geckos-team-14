@@ -33,7 +33,7 @@ class Frontpage extends Component {
   render() {
     return (
         <PageWrapper>
-          <Heading>Hello World!</Heading>
+          <Heading>SOOOOOOREG!</Heading>
         </PageWrapper>
     );
   }
