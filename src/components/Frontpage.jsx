@@ -1,4 +1,24 @@
 import React, { Component } from "react";
+import styled from 'styled-components';
+
+const PageWrapper = styled.div`
+  width: 100vw;
+  min-height: 100vh;
+  overflow-x: hidden;
+  background: #ccc;
+`;
+
+// Just delete this heading, whoever starts working on the frontpage :) 
+const Heading = styled.h1`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100vh;
+  color: black;
+  font-size: 32px;
+  font-weight: bold;
+`;
 
 class Frontpage extends Component {
   constructor() {
@@ -12,7 +32,9 @@ class Frontpage extends Component {
 
   render() {
     return (
-        <div>Hello world!</div>
+        <PageWrapper>
+          <Heading>Hello World!</Heading>
+        </PageWrapper>
     );
   }
 }

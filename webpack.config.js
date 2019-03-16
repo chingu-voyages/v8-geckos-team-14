@@ -12,6 +12,10 @@ module.exports = {
         }
       },
       {
+        test:/\.(s*)css$/,
+        use:['style-loader','css-loader', 'sass-loader']
+      },
+      {
         test: /\.html$/,
         use: [
           {
@@ -24,7 +28,7 @@ module.exports = {
   plugins: [
     new HtmlWebPackPlugin({
       template: "./src/index.html",
-      filename: "./popup.html"
+      filename: "./tab.html"
     }),
     // Copies files needed by chrome to dist folder
     new CopyPlugin([

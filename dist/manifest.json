@@ -5,7 +5,7 @@
   "description": "Momendev - Momentum for developers",
   "browser_action": {},
   "chrome_url_overrides": {
-    "newtab": "popup.html"
+    "newtab": "tab.html"
   },
   "background": {
     "scripts": [
