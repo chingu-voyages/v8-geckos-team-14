@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import reset from './content/scss/reset.scss';
 import Frontpage from './components/Frontpage.jsx';
 
 
