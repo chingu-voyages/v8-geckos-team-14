@@ -33,7 +33,8 @@ module.exports = {
     // Copies files needed by chrome to dist folder
     new CopyPlugin([
       { from: 'manifest.json', to: '' },
-      { from: 'src/newtab.js', to: '' }
+      { from: 'src/newtab.js', to: '' },
+      { from: 'src/reset.css', to: '' }
     ]),
   ]
 };
