@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import styled from 'styled-components';
 import SideMenu from "./SideMenu.jsx";
-import ToDo from "./Todo.jsx";
 import Todo from "./Todo.jsx";
 
 //stylings for the overall container of the app
