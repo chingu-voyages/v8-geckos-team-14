@@ -7,6 +7,7 @@ const Heading = styled.h1`
   font-weight: bold;
 `;
 
+// currently a filler component, just for testin
 export default class Todo extends React.Component {
     constructor(props) {
         super(props);

@@ -34,6 +34,7 @@ const Button = styled.button`
     }
 `;
 
+//the menu component get the function for the state changes as props
 export default class SideMenu extends React.Component {
     constructor(props) {
         super(props);

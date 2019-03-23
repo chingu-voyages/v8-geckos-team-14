@@ -30,7 +30,7 @@ const Main = styled.div`
   height: 100vh;
 `;
 
-
+//the overall component with everything on screen
 export default class Frontpage extends Component {
   constructor() {
     super();
@@ -38,10 +38,12 @@ export default class Frontpage extends Component {
       mainState: <Heading>Start</Heading>,
       menuState: null
     };
+    //binding the function to this component
     this.menuStateSetter = this.menuStateSetter.bind(this);
   }
 
-  //upon change of the menuState by the menu component the different main contents will be loaded in
+  //this function is used as a props for the side menu and when the user clicks a buttons, the right components gets loaded in into the main area
+  //might need changes in the future when we have a pomodoro clock which has to send some sort of notification even without being on screen
   menuStateSetter(e, state) {
     e.preventDefault();
     
