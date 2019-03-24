@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import styled from 'styled-components';
+
 import SideMenu from "./SideMenu.jsx";
 import ViewRender from './ViewRender.jsx';
 import { Heading } from './SharedStyles.js';
@@ -29,6 +30,7 @@ const Main = styled.div`
 export default class Frontpage extends Component {
   constructor() {
     super();
+
     this.state = { 
       mainState: null,
       menuState: null
@@ -54,7 +56,7 @@ export default class Frontpage extends Component {
   render() {
     return (
         <PageWrapper>
-        <SideMenu changeView={this.changeView}/>
+          <SideMenu changeView={this.changeView}/>
           <Main>
             <ViewRender view={this.state.menuState} />
           </Main> 
