@@ -1,9 +1,14 @@
-import React from 'react';
-// import './ToDo.css';
-// import '../node_modules/font-awesome/css/font-awesome.min.css';
+import React from "react";
+import styled from 'styled-components';
+
+const Heading = styled.h1`
+  color: black;
+  font-size: 2em;
+  font-weight: bold;
+`;
 
 
-export default class ToDo extends React.Component {
+class ToDo extends React.Component {
   constructor(props){
     super(props);
     this.state = {
@@ -66,3 +71,5 @@ export default class ToDo extends React.Component {
     )
   }
 }
+
+export default ToDo;
