@@ -20,6 +20,7 @@
   "homepage": "https://github.com/chingu-voyages/v8-geckos-team-14#readme",
   "devDependencies": {
     "@babel/core": "^7.3.4",
+    "@babel/plugin-proposal-class-properties": "^7.4.0",
     "@babel/preset-env": "^7.3.4",
     "@babel/preset-react": "^7.0.0",
     "babel-loader": "^8.0.5",

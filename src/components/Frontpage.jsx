@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import styled from 'styled-components';
+import ToDo from './toDo.jsx';
 
 const PageWrapper = styled.div`
   width: 100vw;
@@ -8,7 +9,7 @@ const PageWrapper = styled.div`
   background: #ccc;
 `;
 
-// Just delete this heading, whoever starts working on the frontpage :) 
+// Just delete this heading, whoever starts working on the frontpage :)
 const Heading = styled.h1`
   display: flex;
   justify-content: center;
@@ -24,7 +25,7 @@ class Frontpage extends Component {
   constructor() {
     super();
       // State for subcomponents goes here, and gets passed as props to sub-components.
-      // If props sublevels exceeds 3 (ex. Frontpage - Settings-component - Settings-categories - Setting), 
+      // If props sublevels exceeds 3 (ex. Frontpage - Settings-component - Settings-categories - Setting),
       // then we should consider using Redux.
 
       // If we need subpages (ex. About-page), then we should probably use React-Router
@@ -33,7 +34,8 @@ class Frontpage extends Component {
   render() {
     return (
         <PageWrapper>
-          <Heading>SOOOOOOREG!</Heading>
+
+          <ToDo> </ToDo>
         </PageWrapper>
     );
   }
