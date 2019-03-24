@@ -5,13 +5,7 @@ import Home from './views/Home.jsx';
 import PictureInfo from './views/PictureInfo.jsx';
 import Pomodoro from './views/Pomodoro.jsx';
 import Weather from './views/Weather.jsx';
-
-// styling for the current welcoming text
-const Heading = styled.h1`
-  color: black;
-  font-size: 2em;
-  font-weight: bold;
-`;
+import { Heading } from './SharedStyles.js';
 
 //this function is used as a props for the side menu and when the user clicks a buttons, the right components gets loaded in into the main area
 //might need changes in the future when we have a pomodoro clock which has to send some sort of notification even without being on screen

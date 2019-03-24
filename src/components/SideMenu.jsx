@@ -5,7 +5,6 @@ const Menu = styled.div`
   width: 10vw;
   height: 90vh;
   overflow-x: hidden;
-  background: #4218C8;
 `;
 
 const Button = styled.button`

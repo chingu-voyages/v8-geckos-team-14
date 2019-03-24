@@ -1,11 +1,5 @@
 import React from 'react';
-import styled from 'styled-components';
-
-const Heading = styled.h1`
-  color: black;
-  font-size: 2em;
-  font-weight: bold;
-`;
+import { Heading } from '../SharedStyles.js';
 
 const Todo = () => {
     return <Heading>Todo component</Heading>

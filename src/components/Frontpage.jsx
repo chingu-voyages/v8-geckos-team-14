@@ -2,22 +2,18 @@ import React, { Component } from "react";
 import styled from 'styled-components';
 import SideMenu from "./SideMenu.jsx";
 import ViewRender from './ViewRender.jsx';
+import { Heading } from './SharedStyles.js';
 
 //stylings for the overall container of the app
 const PageWrapper = styled.div`
   width: 100vw;
   min-height: 100vh;
   overflow-x: hidden;
-  background: #7C5CE4;
+  background: url('../src/content/gfx/app-bg-image.jpg');
+  background-size: cover;
+  background-position: center;
   display: flex;
   justify-content: center;
-`;
-
-// styling for the current welcoming text
-const Heading = styled.h1`
-  color: black;
-  font-size: 2em;
-  font-weight: bold;
 `;
 
 //styling for the main div where components are loaded in
