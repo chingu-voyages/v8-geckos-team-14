@@ -2,25 +2,19 @@ import React, { Component } from "react";
 import styled from 'styled-components';
 
 import SideMenu from "./SideMenu.jsx";
-import Todo from "./Todo.jsx";
+import ViewRender from './ViewRender.jsx';
+import { Heading } from './SharedStyles.js';
 
 //stylings for the overall container of the app
 const PageWrapper = styled.div`
   width: 100vw;
   min-height: 100vh;
   overflow-x: hidden;
-  background: #7C5CE4;
+  background: url('../src/content/gfx/app-bg-image.jpg');
+  background-size: cover;
+  background-position: center;
   display: flex;
   justify-content: center;
-`;
-
-
-// styling for the current welcoming text
-
-const Heading = styled.h1`
-  color: black;
-  font-size: 2em;
-  font-weight: bold;
 `;
 
 //styling for the main div where components are loaded in
@@ -37,84 +31,35 @@ export default class Frontpage extends Component {
   constructor() {
     super();
 
-    this.state = {
-      mainState: <Heading>Start</Heading>,
+    this.state = { 
+      mainState: null,
       menuState: null
     };
-    //binding the function to this component
-    this.menuStateSetter = this.menuStateSetter.bind(this);
+
+    this.changeView = this.changeView.bind(this);
   }
 
-
-  //this function is used as a props for the side menu and when the user clicks a buttons, the right components gets loaded in into the main area
-  //might need changes in the future when we have a pomodoro clock which has to send some sort of notification even without being on screen
-  menuStateSetter(e, state) {
-    e.preventDefault();
-
-    switch (state) {
-      case "weather":
-        if (this.state.menuState !== "weather") {
-          this.setState({
-            menuState: "weather",
-            mainState: <Heading>Filler for weather App</Heading>
-          })
-        } else {
-          this.setState({
-            menuState: null,
-            mainState: <Heading>Default Welcome!</Heading>
-          })
-        }
-        break;
-      case "todo":
-        if (this.state.menuState !== "todo") {
-          this.setState({
-            menuState: "todo",
-            mainState: <Todo/>
-          })
-        } else {
-          this.setState({
-            menuState: null,
-            mainState: <Heading>Default Welcome!</Heading>
-          })
-        }
-        break;
-      case "pomodoro":
-        if (this.state.menuState !== "pomodoro") {
-          this.setState({
-            menuState: "pomodoro",
-            mainState: <Heading>Filler for pomodoro clock</Heading>
-          })
-        } else {
-          this.setState({
-            menuState: null,
-            mainState: <Heading>Default Welcome!</Heading>
-          })
-        }
-        break;
-      case "info":
-        if (this.state.menuState !== "info") {
-          this.setState({
-            menuState: "info",
-            mainState: <Heading>Filler for picture info</Heading>
-          })
-        } else {
-          this.setState({
-            menuState: null,
-            mainState: <Heading>Default Welcome! In ther full App that would be empty</Heading>
-          })
-        }
-        break;
-      }
+  // Change menu based on state. If the state is same value, it means the button is clicked again, and it should toss the state.
+  changeView(value) {
+    if(this.state.menuState !== value) {
+      this.setState({
+        menuState: value
+      })
+    }
+    else {
+      this.setState({
+        menuState: null
+      })
+    }
   }
 
   render() {
     return (
         <PageWrapper>
-
-        <SideMenu menuStateSetter={this.menuStateSetter}/>
+          <SideMenu changeView={this.changeView}/>
           <Main>
-            {this.state.mainState}
-          </Main>
+            <ViewRender view={this.state.menuState} />
+          </Main> 
         </PageWrapper>
     );
   }
