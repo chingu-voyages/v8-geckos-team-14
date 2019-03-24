@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import styled from 'styled-components';
+import ToDo from './toDo.jsx';
 
 import SideMenu from "./SideMenu.jsx";
 import ViewRender from './ViewRender.jsx';
@@ -21,8 +22,10 @@ const PageWrapper = styled.div`
 `;
 
 
+
 //styling for the main div where components are loaded in
 const Main = styled.div`
+
   display: flex;
   justify-content: center;
   align-items: center;
@@ -40,6 +43,7 @@ const QuoteWrapper = styled.div`
 export default class Frontpage extends Component {
   constructor() {
     super();
+
 
     this.state = {
       mainState: null,
@@ -90,6 +94,7 @@ export default class Frontpage extends Component {
           <ToDo />
         </QuoteWrapper>
       </PageWrapper>
+
 
     );
   }
