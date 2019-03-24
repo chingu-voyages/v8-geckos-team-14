@@ -30,7 +30,7 @@ export default class Frontpage extends Component {
   constructor() {
     super();
     this.state = { 
-      mainState: <Heading>Start</Heading>,
+      mainState: null,
       menuState: null
     };
 
