@@ -5,7 +5,6 @@ const Menu = styled.div`
   width: 10vw;
   height: 90vh;
   overflow-x: hidden;
-  background: #4218C8;
 `;
 
 const Button = styled.button`
@@ -40,18 +39,23 @@ export default class SideMenu extends React.Component {
         super(props);
     }
 
+    changeView(e, view) {
+      e.preventDefault();
+      this.props.changeView(view);
+    }
+
     render() {
             return (<Menu>
-              <Button onClick={(e) => this.props.menuStateSetter(e, "weather")}>
+              <Button onClick={(e) => this.changeView(e, "weather")}>
                 12°C
               </Button>
-              <Button onClick={(e) => this.props.menuStateSetter(e, "todo")}>
+              <Button onClick={(e) => this.changeView(e, "todo")}>
                 ToDo
               </Button>
-              <Button onClick={(e) => this.props.menuStateSetter(e, "pomodoro")}>
+              <Button onClick={(e) => this.changeView(e, "pomodoro")}>
                 Pomo
               </Button>
-              <Button onClick={(e) => this.props.menuStateSetter(e, "info")}>
+              <Button onClick={(e) => this.changeView(e, "info")}>
                 Info
               </Button>
             </Menu>);

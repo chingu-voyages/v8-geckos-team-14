@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import CurrentWeather from "./CurrentWeather.jsx";
-import Forecast from "./Forecast.jsx";
+import CurrentWeather from "../Weather/CurrentWeather.jsx";
+import Forecast from "../Weather/Forecast.jsx";
 import axios from "axios";
 import styled from "styled-components";
 
@@ -60,7 +60,7 @@ class WeatherCard extends Component {
     this.getLocation();
   }
 
-   // Use of APIXU API with latitude and longitude query
+  // Use of APIXU API with latitude and longitude query
   getWeather() {
     const { latitude, longitude, numForecastDays } = this.state;
     const URL = `https://api.apixu.com/v1/forecast.json?key=${KEY}&q=${latitude},${longitude}&days=${numForecastDays}`;
