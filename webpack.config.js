@@ -1,7 +1,9 @@
 const HtmlWebPackPlugin = require("html-webpack-plugin");
 const CopyPlugin = require('copy-webpack-plugin');
+const path = require('path');
 
 module.exports = {
+  entry: './src/index.js',
   module: {
     rules: [
       {
@@ -27,7 +29,7 @@ module.exports = {
   },
   plugins: [
     new HtmlWebPackPlugin({
-      template: "./src/index.html",
+      template: path.resolve(__dirname, "./src/index.html"),
       filename: "./tab.html"
     }),
     // Copies files needed by chrome to dist folder

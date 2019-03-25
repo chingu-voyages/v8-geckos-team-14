@@ -1,9 +1,7 @@
 import React, { Component } from "react";
 import styled from 'styled-components';
-
 import SideMenu from "./SideMenu.jsx";
 import ViewRender from './ViewRender.jsx';
-import { Heading } from './SharedStyles.js';
 
 //stylings for the overall container of the app
 const PageWrapper = styled.div`
@@ -38,7 +36,6 @@ export default class Frontpage extends Component {
 
     this.changeView = this.changeView.bind(this);
   }
-
   // Change menu based on state. If the state is same value, it means the button is clicked again, and it should toss the state.
   changeView(value) {
     if(this.state.menuState !== value) {
