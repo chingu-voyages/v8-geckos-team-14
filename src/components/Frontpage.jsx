@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import styled from 'styled-components';
 import SideMenu from "./SideMenu.jsx";
 import Todo from "./Todo.jsx";
+import WeatherCard from './Weather/WeatherCard.jsx';
 
 //stylings for the overall container of the app
 const PageWrapper = styled.div`
@@ -51,7 +52,7 @@ export default class Frontpage extends Component {
         if (this.state.menuState !== "weather") {
           this.setState({ 
             menuState: "weather",
-            mainState: <Heading>Filler for weather App</Heading>
+            mainState: <WeatherCard />
           })
         } else {
           this.setState({
