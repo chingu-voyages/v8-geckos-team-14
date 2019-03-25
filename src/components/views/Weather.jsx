@@ -56,6 +56,7 @@ class WeatherCard extends Component {
       isLoading: false
     };
   }
+  
   componentDidMount() {
     this.getLocation();
   }
@@ -70,7 +71,7 @@ class WeatherCard extends Component {
         const data = res.data;
 
         this.setState({
-          cityName: data.location.name,
+          cityName: data.location.name + ", " + data.location.region,
           summary: data.current.condition.text,
           temperature: data.current.temp_c,
           forecastDays: data.forecast.forecastday,
