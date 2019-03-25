@@ -1,5 +1,6 @@
 import React from "react";
 import styled from 'styled-components';
+import ls from 'local-storage';
 
 const Heading = styled.h1`
   color: black;
@@ -12,11 +13,13 @@ class ToDo extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-      visible: 'todo-popup-container-hidden',
-      value: '',
-      todoItems: [],
-      strike: ''
+      visible: ls.get('visible') || 'todo-popup-container-hidden',
+      value: ls.get('value') || '',
+      todoItems: ls.get('todoItems') || [],
+      strike: ls.get('strike') || ''
     }
+    console.log('constructor',this.state );
+
   }
 
   toggleClass = (event) => {
@@ -24,34 +27,47 @@ class ToDo extends React.Component {
     if(this.state.visible === 'todo-popup-container-hidden') {
       visible = 'todo-popup-container';
       this.setState({visible});
+      ls.set('visible',visible);
     } else {
       visible = 'todo-popup-container-hidden';
       this.setState({visible});
+      ls.set('visible',visible);
     }
   }
 
   handleChange = (event) => {
     this.setState({value: event.target.value});
+    ls.set('value',event.target.value);
   }
 
   handleSubmit = (event) => {
+
     event.preventDefault();
+      console.log('kkkkkkk',this.state.todoItems);
+    const newTodoItems = [...this.state.todoItems, this.state.value];
+
     this.setState({
       value: '',
-      todoItems:[...this.state.todoItems, this.state.value]
+      todoItems: newTodoItems
     });
+
+    ls.set('value','');
+    console.log('22222',this.state );
+    ls.set('todoItems', newTodoItems);
+    console.log('3333',this.state );
   }
 
   deleteTodoItem = (key) => {
     let todoItems = {...this.state.todoItems};
     delete todoItems[key];
     this.setState({todoItems});
+    ls.set('todoItems', todoItems);
   }
 
   renderList = (key) => {
     let listItem = this.state.todoItems[key];
     return(
-          <li key={key}> {listItem} <i count={key} className="fa fa-times-circle" onClick={(event) => this.deleteTodoItem(key)}></i></li>
+          <li key={key}> {listItem} <i count={key} className="fa fa-times-circle" onClick={(event) => this.deleteTodoItem(key)}>X</i></li>
     )
   }
 
@@ -70,6 +86,7 @@ class ToDo extends React.Component {
       </div>
     )
   }
+
 }
 
-export default ToDo;
+export default Todo;
