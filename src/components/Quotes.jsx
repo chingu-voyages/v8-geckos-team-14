@@ -4,47 +4,36 @@ import styled from "styled-components";
 
 //styling wrapping quote text and quote author
 const Wrapper = styled.div`
-  height: 57px;
-  width: 100%;
-  margin: 0;
-  padding-bottom: 3px;
-  display: flex;
-  align-items: center;
+  height: 4em;
+  width: 90%;
+  margin: 0 0 0 5%;
   text-align: center;
-  position: relative;
 `;
 
 //Styling for the source of the quote
 const Author = styled.div`
   color: #fff;
-  position: absolute;
-  right: 0;
-  bottom: -30px;
-  left: 0;
-  font-size: 0.875rem;
-  opacity: 0;
-  transform: translateY(-22px);
+  font-size: 1rem;
+  opacity: 0.80;
+  transform: translateY(-1.5rem);
   margin-right: 4px;
-  opacity: 0.75;
-	display: none
+  text-shadow: 1px 1px 0px black;
 `;
 
 //styling for the quote body
 const Quote = styled.div`
   width: 100%;
+  background: rgba(0, 0, 0, 0.2);
+  text-shadow: 1px 1px 0px black;
+  padding: 0.5em 0.5em 1.5em 0.5em;
+  border-radius: 20px;
   display: block;
-  position: relative;
   font-size: 1.125rem;
-  font-weight: 300;
+  font-weight: 500;
   user-select: text;
   margin: 0;
   transition: all 0.35s ease;
   color: rgba(255, 255, 255, 0.9);
-	line-height: 1.2;
-
-  &:hover + ${Author} {
-		display: block;
-  }
 `;
 
 export default class Quotes extends Component {	

@@ -29,7 +29,6 @@ const Main = styled.div`
 const QuoteWrapper = styled.div`
   position: absolute;
   bottom: 20px;
-
 `
 
 //the overall component with everything on screen
