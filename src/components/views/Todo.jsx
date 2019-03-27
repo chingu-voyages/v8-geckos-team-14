@@ -8,6 +8,63 @@ const Heading = styled.h1`
   font-weight: bold;
 `;
 
+const TodoDiv = styled.div`
+  box-sizing: border-box;
+  margin: 0;
+  min-width: 250px;
+`;
+
+const TodoUl = styled.ul`
+  margin: 0;
+  padding: 0;
+`;
+
+const TodoLi = styled.li`
+  cursor: pointer;
+  position: relative;
+  padding: 5px 40px 12px 8px;
+  background: #eee;
+  font-size: 18px;
+  transition: 0.2s;
+
+  /* make the list items unselectable */
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+`;
+
+const TodoDelete = styled.i`
+  position: absolute;
+  right: 0;
+  top: 0;
+  padding: 12px 16px 12px 16px;
+`;
+
+
+const TodoHeader = styled.div`
+  background-color: transparent;
+  padding: 40px 20px;
+  color: white;
+  text-align: center;
+`;
+
+const TodoInput = styled.input`
+  margin: 0;
+  border: none;
+  border-radius: 0;
+  width: 90%;
+  padding: 5px;
+  float: left;
+  font-size: 16px;
+`;
+
+
+
+
+
+
+
 
 class ToDo extends React.Component {
   constructor(props){
@@ -15,10 +72,12 @@ class ToDo extends React.Component {
     this.state = {
       visible: ls.get('visible') || 'todo-popup-container-hidden',
       value: ls.get('value') || '',
-      todoItems: ls.get('todoItems') || [],
+      //complicated check if object is empty, the more simple ls.get('todoItems') returns true
+      todoItems:  Object.keys(ls.get('todoItems')).length === 0
+                  && ls.get('todoItems').constructor === Object
+                  ? []  : ls.get('todoItems'),
       strike: ls.get('strike') || ''
     }
-    console.log('constructor',this.state );
 
   }
 
@@ -43,47 +102,42 @@ class ToDo extends React.Component {
   handleSubmit = (event) => {
 
     event.preventDefault();
-      console.log('kkkkkkk',this.state.todoItems);
     const newTodoItems = [...this.state.todoItems, this.state.value];
 
     this.setState({
       value: '',
       todoItems: newTodoItems
     });
-
     ls.set('value','');
-    console.log('22222',this.state );
     ls.set('todoItems', newTodoItems);
-    console.log('3333',this.state );
   }
 
   deleteTodoItem = (key) => {
-    let todoItems = {...this.state.todoItems};
-    delete todoItems[key];
-    this.setState({todoItems});
+    let todoItems = [...this.state.todoItems];
+    todoItems.splice(key, 1);
+    this.setState({todoItems: todoItems});
     ls.set('todoItems', todoItems);
   }
 
   renderList = (key) => {
     let listItem = this.state.todoItems[key];
     return(
-          <li key={key}> {listItem} <i count={key} className="fa fa-times-circle" onClick={(event) => this.deleteTodoItem(key)}>X</i></li>
+          <TodoLi key={key}> {listItem} <TodoDelete count={key}  onClick={(event) => this.deleteTodoItem(key)}> &#x2715;</TodoDelete></TodoLi>
     )
   }
 
   render () {
     return (
-      <div className="todo-wrapper">
-        <div className={this.state.visible}>
-          <ul className="todos-here">
+      <TodoDiv>
+          <TodoUl>
             {Object.keys(this.state.todoItems).map(this.renderList)}
-          </ul>
-          <form onSubmit={this.handleSubmit}>
-            <input onChange={this.handleChange} value={this.state.value} className="todo-input" type="text" placeholder="Write your todos here" />
-          </form>
-        </div>
-        <button onClick={this.toggleClass} className="todo-btn">ToDo</button>
-      </div>
+          </TodoUl>
+          <TodoHeader>
+            <form onSubmit={this.handleSubmit}>
+              <TodoInput onChange={this.handleChange} value={this.state.value} type="text" placeholder="Write your todos here" />
+            </form>
+          </TodoHeader>
+      </TodoDiv>
     )
   }
 
