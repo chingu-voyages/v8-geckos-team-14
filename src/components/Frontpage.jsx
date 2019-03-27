@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import styled from 'styled-components';
 import SideMenu from "./SideMenu.jsx";
 import ViewRender from './ViewRender.jsx';
+import Quotes from './Quotes.jsx'
 
 //stylings for the overall container of the app
 const PageWrapper = styled.div`
@@ -23,6 +24,12 @@ const Main = styled.div`
   width: 90vw;
   height: 100vh;
 `;
+
+//styling of the Quotes wrapper
+const QuoteWrapper = styled.div`
+  position: absolute;
+  bottom: 20px;
+`
 
 //the overall component with everything on screen
 export default class Frontpage extends Component {
@@ -52,12 +59,15 @@ export default class Frontpage extends Component {
 
   render() {
     return (
-        <PageWrapper>
-          <SideMenu changeView={this.changeView}/>
-          <Main>
-            <ViewRender view={this.state.menuState} />
-          </Main> 
-        </PageWrapper>
+      <PageWrapper>
+        <SideMenu changeView={this.changeView} />
+        <Main>
+          <ViewRender view={this.state.menuState} />
+        </Main>
+        <QuoteWrapper>
+          <Quotes />
+        </QuoteWrapper>
+      </PageWrapper>
     );
   }
 }
