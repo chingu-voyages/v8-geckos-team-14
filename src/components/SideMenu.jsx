@@ -55,7 +55,7 @@ export default class SideMenu extends React.Component {
               <Button onClick={(e) => this.changeView(e, "pomodoro")}>
                 Pomo
               </Button>
-              <Button onClick={(e) => this.changeView(e, "info")}>
+              <Button onClick={(e) => this.changeView(e, "picture")}>
                 Info
               </Button>
             </Menu>);

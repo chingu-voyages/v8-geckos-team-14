@@ -45,15 +45,26 @@ export default class Frontpage extends Component {
   }
   // Change menu based on state. If the state is same value, it means the button is clicked again, and it should toss the state.
   changeView(value) {
+
     if(this.state.menuState !== value) {
       this.setState({
         menuState: value
       })
+      // Hide views, activate new view
+      const oldView = document.querySelector('.view-active');
+      const newView = document.getElementById(value);
+      oldView.classList.remove('view-active');
+      newView.classList.add('view-active');
     }
     else {
       this.setState({
         menuState: null
       })
+      // Hide views, show default view
+      const oldView = document.querySelector('.view-active');
+      const newView = document.getElementById('home');
+      oldView.classList.remove('view-active');
+      newView.classList.add('view-active');
     }
   }
 
