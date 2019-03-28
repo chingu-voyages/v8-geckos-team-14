@@ -80,19 +80,7 @@ class ToDo extends React.Component {
     }
 
   }
-
-  toggleClass = (event) => {
-    let visible = {...this.state.visible};
-    if(this.state.visible === 'todo-popup-container-hidden') {
-      visible = 'todo-popup-container';
-      this.setState({visible});
-      ls.set('visible',visible);
-    } else {
-      visible = 'todo-popup-container-hidden';
-      this.setState({visible});
-      ls.set('visible',visible);
-    }
-  }
+ 
 
   handleChange = (event) => {
     this.setState({value: event.target.value});
