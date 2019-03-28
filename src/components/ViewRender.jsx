@@ -7,21 +7,36 @@ import Pomodoro from './views/Pomodoro.jsx';
 import Weather from './views/Weather.jsx';
 import { Heading } from './SharedStyles.js';
 
-//this function is used as a props for the side menu and when the user clicks a buttons, the right components gets loaded in into the main area
-//might need changes in the future when we have a pomodoro clock which has to send some sort of notification even without being on screen
+const View = styled.div`
+    display: none;
+
+    &.view-active {
+        display: block;
+    }
+`;
+
+// This function is triggered by a script from FrontPage.jsx.
+// All views here are hidden except default view. Views are now hidden / unhidden, instead of swapped. This ensures that we always keep the state.
 const ViewRender = ({ view }) => {
-    switch (view) {
-        case "weather":
-            return <Weather />
-        case "todo":
-            return <Todo />
-        case "pomodoro":
-            return <Pomodoro />
-        case "info":
-            return <PictureInfo />
-        default: 
-            return <Home />
-      }
+    return (
+        <div>
+            <View id="weather" className="view">
+                <Weather />
+            </View>
+            <View id="todo" className="view">
+                <Todo />
+            </View>
+            <View id="pomodoro" className="view">
+                <Pomodoro />
+            </View>
+            <View id="picture" className="view">
+                <PictureInfo />
+            </View>
+            <View id="home" className="view view-active" data-view="home">
+                <Home />
+            </View>
+        </div>
+    )
 }
 
 export default ViewRender;
