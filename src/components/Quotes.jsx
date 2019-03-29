@@ -37,63 +37,68 @@ const Quote = styled.div`
   color: rgba(255, 255, 255, 0.9);
 `;
 
-export default class Quotes extends Component {	
-		_isMounted = false;
+export default class Quotes extends Component {
+  _isMounted = false;
 
-    state = {
-      quotes: "",
-			authors: "",
-			isloading: true
-    };
+  state = {
+    quotes: "Take it easy — but take it.",
+    authors: "Woody Guthrie",
+    isloading: true
+  };
 
   componentDidMount() {
-		this._isMounted = true;
+    this._isMounted = true;
     this.getQuote();
   }
 
   getQuote = () => {
-		const proxy = "https://cors-anywhere.herokuapp.com/";
-		const URL = `${proxy}https://api.forismatic.com/api/1.0/?method=getQuote&lang=en&format=json`;
+    const proxy = "https://cors-anywhere.herokuapp.com/";
+    const URL = `${proxy}https://api.forismatic.com/api/1.0/?method=getQuote&lang=en&format=json`;
 
     axios
       .get(URL)
       .then(res => {
         const data = res.data;
-        console.log(data)
-				if(this._isMounted){
-					this.setState({
-						isLoading: false,
-						quotes: data.quoteText,
-						authors: data.quoteAuthor
-					});
-				}
+        console.log(data);
+        if (this._isMounted) {
+          this.setState({
+            isLoading: false,
+            quotes: data.quoteText,
+            authors: data.quoteAuthor
+          });
+        }
       })
       .catch(err => {
         if (err) console.log(err);
       });
-	};
+  };
 
-	componentWillUnmount() {
-		this._isMounted = false;
-	}
+  componentWillUnmount() {
+    this._isMounted = false;
+  }
 
-	
   render() {
     const { quotes, authors, isLoading } = this.state;
 
-    // Check if there is a quote. If there is no quote and author from the API return a hard coded quote.
-    const quote = quotes === "" && authors === "" || quotes === undefined ? 'I have no quote for you! Refresh the page' : quotes
+    // Check if there is a quote. If there is no quote and author from the API return default quote from initial state.
+    const quote =
+      (quotes === "" && authors === "") || quotes === undefined
+        ? "Take it easy — but take it." && authors === "Woody Guthrie"
+        : quotes;
 
     //check if there is an author. If there is none return "Unknown Author". Do not return anything if there is no quote.
-    const author = authors === "" && quote === quotes ? "Unknown Author" : quotes === "" ? null : authors
-    
-    return (
-      !isLoading ? 
+    const author =
+      authors === "" && quote === quotes
+        ? "Unknown Author"
+        : authors;
+
+    return !isLoading ? (
       <Wrapper>
-        <Quote>{`${quote}`}</Quote>
+        <Quote>{quote}</Quote>
         <Author>{author}</Author>
-      </Wrapper> :
-      <div>Loading...</div>
+      </Wrapper>
+    ) : (
+      <Wrapper>Loading...</Wrapper>
     );
   }
 }
