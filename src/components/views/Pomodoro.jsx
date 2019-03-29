@@ -3,11 +3,18 @@ import styled from "styled-components";
 import { Button } from "../SharedStyles.js";
 
 const Wrapper = styled.div`
-  width: 30vw;
-  min-height: 30vw;
+  background: rgba(0,0,0,0.4);
+  border-radius: 15px;
+  width: 18em;
+  height: 24em;
   overflow-x: hidden;
   display: flex;
   flex-direction:column;
+  justify-content: center;
+`;
+
+const Display = styled.div`
+  display: flex;
   justify-content: center;
 `;
 
@@ -44,24 +51,46 @@ const RangeSlider = styled.input.attrs(({ inputType, min ,max }) => ({
     }
 `
 
+const RangeSliderWork = styled(RangeSlider)`
+`;
+
+const RangeSliderBreak = styled(RangeSlider)`
+`;
+
 //the number which display the minutes remaining to work
-const Display = styled.h1`
+const WorkDisplay = styled.h1`
   color: white;
   text-shadow: 1px 1px 0px rgba(0,0,0,0.3);
   font-size: 2em;
   font-weight: bold;
   text-align: center;
-  margin-bottom: 1em;
+  margin-bottom: 0.5em;
+  margin-right: 1em;
+`;
+
+const BreakDisplay = styled.h1`
+  color: white;
+  text-shadow: 1px 1px 0px rgba(0,0,0,0.3);
+  font-size: 2em;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 0.5em;
 `;
 
 //the number which display the minutes remaining to work
 const Explainer = styled.h2`
-  margin-bottom: 1em;
+  margin-bottom: 0.5em;
   color: white;
-  text-shadow: 1px 1px 0px rgba(0,0,0,0.3);
-  font-size: 2em;
+  text-shadow: 2px 2px 0px rgba(0,0,0,0.5);
+  font-size: 1.5em;
   font-weight: bold;
   text-align: center;
+`;
+
+const Work = styled(Explainer)`
+`;
+
+const Break = styled(Explainer)`
 `;
 
 //button to start the pomodoro
@@ -75,12 +104,23 @@ const TomatoButton = styled(Button)`
   text-shadow: 1px 1px 0px rgba(0,0,0,0.3);
 `;
 
+const Reset = styled(Button)`
+  margin: 0 0 1em calc(50% - 4.5em);
+  border-radius: 5px;
+  position: relative;
+  padding: 0;
+  height: 3em;
+  width: 9em;
+  font-size: 0.8em;
+  text-shadow: 1px 1px 0px rgba(0,0,0,0.3);
+`;
+
 
 export default class Pomodoro extends Component {
     constructor() {
         super();
         this.state = {
-            text: "Slide the timer to set your working time",
+            reset: "Pomodoro",
             button: <TomatoButton onClick={e => this.startTicking(e)}>Start</TomatoButton>,
             duration: 1500000,
             break: 300000,
@@ -92,15 +132,24 @@ export default class Pomodoro extends Component {
     render() {
         return (
             <Wrapper>
-                <Explainer>{this.state.text}</Explainer>
-                <RangeSlider
+                <Reset>{this.state.reset}</Reset>
+                <Work>Work time</Work>
+                <RangeSliderWork
                     type="range"
                     min="1"
                     max="59"
-                    onChange="" />
-                <Display>{this.state.display()}</Display>
+                    onChange={(e) => this.rangeChange(e)} />
+                <Break>Break time</Break>
+                <RangeSliderBreak
+                    type="range"
+                    min="1"
+                    max="59"
+                    onChange={(e) => this.rangeChange(e)} />
+                <Display>
+                    <WorkDisplay>{this.state.display()}</WorkDisplay>
+                    <BreakDisplay>{this.state.display()}</BreakDisplay>
+                </Display>
                 <div>{this.state.button}</div>
-                <Reset>Reset</Reset>
             </Wrapper>
         );
     }
@@ -108,7 +157,8 @@ export default class Pomodoro extends Component {
     //starts the pomodoro
     startTicking = (e) => {
         e.preventDefault();
-        this.setState({ 
+        this.setState({
+            reset: "Reset",
             text: "Work time",
             button: <TomatoButton onClick={e => this.pauseTicking(e)}>Pause</TomatoButton>
         })
@@ -130,6 +180,11 @@ export default class Pomodoro extends Component {
         } else {  
             this.setState({ display: () => { return this.minutes().toString() + ":" + this.seconds().toString() }})
         }
+    }
+
+    rangeChange = (e) => {
+        e.preventDefault();
+        alert("a")
     }
 
 
