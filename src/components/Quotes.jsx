@@ -5,8 +5,8 @@ import styled from "styled-components";
 //styling wrapping quote text and quote author
 const Wrapper = styled.div`
   height: 4em;
-  width: 90%;
-  margin: 0 0 0 5%;
+  width: 100%;
+  padding-bottom: 5px;
   text-align: center;
 `;
 
@@ -14,10 +14,11 @@ const Wrapper = styled.div`
 const Author = styled.div`
   color: #fff;
   font-size: 1rem;
-  opacity: 0.80;
+  opacity: 0.8;
   transform: translateY(-1.5rem);
   margin-right: 4px;
   text-shadow: 1px 1px 0px black;
+  padding-top: 5px;
 `;
 
 //styling for the quote body
@@ -29,7 +30,7 @@ const Quote = styled.div`
   border-radius: 20px;
   display: block;
   font-size: 1.125rem;
-  font-weight: 500;
+  font-weight: 600;
   user-select: text;
   margin: 0;
   transition: all 0.35s ease;
@@ -40,8 +41,8 @@ export default class Quotes extends Component {
 		_isMounted = false;
 
     state = {
-      quote: "",
-			author: "",
+      quotes: "",
+			authors: "",
 			isloading: true
     };
 
@@ -57,12 +58,13 @@ export default class Quotes extends Component {
     axios
       .get(URL)
       .then(res => {
-				const data = res.data;
+        const data = res.data;
+        console.log(data)
 				if(this._isMounted){
 					this.setState({
 						isLoading: false,
-						quote: data.quoteText,
-						author: data.quoteAuthor
+						quotes: data.quoteText,
+						authors: data.quoteAuthor
 					});
 				}
       })
@@ -77,12 +79,21 @@ export default class Quotes extends Component {
 
 	
   render() {
-    const { quote, author, isLoading } = this.state;
+    const { quotes, authors, isLoading } = this.state;
+
+    // Check if there is a quote. If there is no quote and author from the API return a hard coded quote.
+    const quote = quotes === "" && authors === "" || quotes === undefined ? 'I have no quote for you! Refresh the page' : quotes
+
+    //check if there is an author. If there is none return "Unknown Author". Do not return anything if there is no quote.
+    const author = authors === "" && quote === quotes ? "Unknown Author" : quotes === "" ? null : authors
+    
     return (
+      !isLoading ? 
       <Wrapper>
-        <Quote>{quote}</Quote>
+        <Quote>{`${quote}`}</Quote>
         <Author>{author}</Author>
-      </Wrapper>
+      </Wrapper> :
+      <div>Loading...</div>
     );
   }
 }
