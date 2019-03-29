@@ -81,13 +81,17 @@ export default class Pomodoro extends Component {
     //starts the pomodoro
     startTicking = (e) => {
         e.preventDefault();
-        this.setState({ text: "Work time" })
+        this.setState({ 
+            text: "Work time",
+            button: <TomatoButton onClick={e => this.pauseTicking(e)}>Pause</TomatoButton>
+        })
         let interval = setInterval(this.timer, 100);
     }
 
     //will containt the functionality to pause the pomodoro
     pauseTicking = (e) => {
         e.preventDefault();
+
     }
 
     //timer used by the interval --> internal clock of pomodoro
