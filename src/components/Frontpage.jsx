@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import styled from 'styled-components';
+
 import SideMenu from "./SideMenu.jsx";
 import ViewRender from './ViewRender.jsx';
 import Quotes from './Quotes.jsx'
@@ -39,6 +40,7 @@ const QuoteWrapper = styled.div`
 export default class Frontpage extends Component {
   constructor() {
     super();
+
     this.state = {
       mainState: null,
       menuState: null
@@ -75,6 +77,7 @@ export default class Frontpage extends Component {
   render() {
     return (
 
+
       <PageWrapper>
         <SideMenu changeView={this.changeView} />
         <Main>
@@ -87,6 +90,7 @@ export default class Frontpage extends Component {
           <ToDo />
         </QuoteWrapper>
       </PageWrapper>
+
     );
   }
 }
