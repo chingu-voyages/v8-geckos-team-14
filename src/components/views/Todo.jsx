@@ -60,27 +60,18 @@ const TodoInput = styled.input`
 `;
 
 
-
-
-
-
-
-
 class ToDo extends React.Component {
   constructor(props){
     super(props);
     this.state = {
       visible: ls.get('visible') || 'todo-popup-container-hidden',
       value: ls.get('value') || '',
-      //complicated check if object is empty, the more simple ls.get('todoItems') returns true
-      todoItems:  Object.keys(ls.get('todoItems')).length === 0
-                  && ls.get('todoItems').constructor === Object
-                  ? []  : ls.get('todoItems'),
+      todoItems:  ls.get('todoItems') || [],
       strike: ls.get('strike') || ''
     }
 
   }
- 
+
 
   handleChange = (event) => {
     this.setState({value: event.target.value});
