@@ -1,12 +1,12 @@
 import React, { Component } from "react";
 import styled from 'styled-components';
-import ToDo from './toDo.jsx';
+
 
 import SideMenu from "./SideMenu.jsx";
 import ViewRender from './ViewRender.jsx';
 import Quotes from './Quotes.jsx'
 import { Heading } from './SharedStyles.js';
-import ToDo from './toDo.jsx';
+
 
 
 //stylings for the overall container of the app
@@ -90,9 +90,7 @@ export default class Frontpage extends Component {
         <QuoteWrapper>
           <Quotes />
         </QuoteWrapper>
-        <QuoteWrapper>
-          <ToDo />
-        </QuoteWrapper>
+
       </PageWrapper>
 
 

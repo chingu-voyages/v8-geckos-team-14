@@ -60,7 +60,7 @@ const TodoInput = styled.input`
 `;
 
 
-class ToDo extends React.Component {
+class Todo extends React.Component {
   constructor(props){
     super(props);
     this.state = {
@@ -81,14 +81,16 @@ class ToDo extends React.Component {
   handleSubmit = (event) => {
 
     event.preventDefault();
-    const newTodoItems = [...this.state.todoItems, this.state.value];
+    if (this.state.value){
+      const newTodoItems = [...this.state.todoItems, this.state.value];
 
-    this.setState({
-      value: '',
-      todoItems: newTodoItems
-    });
-    ls.set('value','');
-    ls.set('todoItems', newTodoItems);
+      this.setState({
+        value: '',
+        todoItems: newTodoItems
+      });
+      ls.set('value','');
+      ls.set('todoItems', newTodoItems);
+    }
   }
 
   deleteTodoItem = (key) => {
