@@ -49,7 +49,7 @@ const RangeSlider = styled.input.attrs(({ inputType, min ,max }) => ({
         background: #fff;
         cursor: pointer;
     }
-`
+`;
 
 const RangeSliderWork = styled(RangeSlider)`
 `;
@@ -122,10 +122,11 @@ export default class Pomodoro extends Component {
         this.state = {
             reset: "Pomodoro",
             button: <TomatoButton onClick={e => this.startTicking(e)}>Start</TomatoButton>,
-            duration: 1500000,
+            duration: 15000,
             break: 300000,
             start: null,
-            display: () => { return Math.floor(this.state.duration / 1000 / 60).toString() + ":00"}
+            interval: null,
+            display: () => { return Math.floor(this.state.duration / 1000 / 60).toString() + ":" + this.secondsFormatter(Math.floor(this.state.duration / 1000 % 60))}
         };
     }
 
@@ -159,16 +160,23 @@ export default class Pomodoro extends Component {
         e.preventDefault();
         this.setState({
             reset: "Reset",
-            text: "Work time",
             button: <TomatoButton onClick={e => this.pauseTicking(e)}>Pause</TomatoButton>
         })
-        let interval = setInterval(this.timer, 100);
+        this.state.interval = setInterval(this.timer, 100);
     }
 
     //will containt the functionality to pause the pomodoro
     pauseTicking = (e) => {
         e.preventDefault();
-
+        clearInterval(this.state.interval);
+        let helpDisplay = this.state.display();
+        this.setState({
+            reset: "Reset",
+            button: <TomatoButton onClick={e => this.startTicking(e)}>Start</TomatoButton>,
+            duration: this.elapsing(this.state.duration, this.state.start),
+            start: null,
+            display: () => { return helpDisplay }
+        })
     }
 
     //timer used by the interval --> internal clock of pomodoro
@@ -177,22 +185,62 @@ export default class Pomodoro extends Component {
     timer = () => {
         if (this.state.start === null) {
             this.setState({ start: Date.now() })
+        } else if (this.elapsing(this.state.duration, this.state.start) < 101) {
+            startBreak();
         } else {  
-            this.setState({ display: () => { return this.minutes().toString() + ":" + this.seconds().toString() }})
+            this.setState({ display: () => { return this.minutes(this.state.duration, this.state.start).toString() + ":" + this.seconds(this.state.duration, this.state.start).toString() }})
         }
     }
 
+    startBreak = () => {
+        clearInterval(this.state.interval);
+        this.setState({
+            button: <TomatoButton onClick={e => this.pauseTicking(e)}>Pause</TomatoButton>,
+            duration: this.elapsing(this.state.duration, this.state.start),
+            start: null,
+            display: () => { return helpDisplay }
+        })
+        // e.preventDefault();
+        // this.setState({
+        //     reset: "Reset",
+        //     button: <TomatoButton onClick={e => this.pauseTicking(e)}>Pause</TomatoButton>
+        // })
+        // this.state.interval = setInterval(this.timer, 100);
+    }
+
+    // pauseBreak = (e) => {
+
+    //     e.preventDefault();
+    //     clearInterval(this.state.interval);
+    //     let helpDisplay = this.state.display();
+    //     this.setState({
+    //         reset: "Reset",
+    //         button: <TomatoButton onClick={e => this.startTicking(e)}>Start</TomatoButton>,
+    //         duration: this.elapsing(this.state.duration, this.state.start),
+    //         start: null,
+    //         display: () => { return helpDisplay }
+    //     })
+    // }
+
     rangeChange = (e) => {
         e.preventDefault();
-        alert("a")
+        alert("a");
     }
 
 
     // ------------------ HELPING FUNCTIONS --------------------------------------------------------------------------------
 
+     //gives back the minutes left in teh ticking time
+    minutes = (duration, start) => { return Math.floor(this.elapsing(duration, start) / 1000 / 60) }
 
-    //output to the screen
-    startMinutesDisplay = (duration) => { }
+    //gives back the seconds left in teh ticking time
+    seconds = (duration, start) => { return this.secondsFormatter(Math.floor(this.elapsing(duration, start) / 1000 % 60)) }
+
+    // returns the value of the pomodoro working time and time difference between start and now
+    elapsing = (duration, start) => { return duration - this.tickingDelta(start); }
+
+    // returns the difference between now and when the pomodoro was started
+    tickingDelta = (start) => { return Math.round((start - Date.now()) * -1) }
 
     //if the seconds which is needed to be display is only in 0 didgets it gets a 0 before it.
     //1 --> 01 ; 59 --> 59
@@ -201,15 +249,9 @@ export default class Pomodoro extends Component {
         return seconds
     }
 
-    // returns the difference between now and when the pomodoro was started
-    tickingDelta = () => { return Math.round((this.state.start - Date.now()) * -1) }
     
-    // returns the value of the pomodoro working time and time difference between start and now
-    elapsing = () => { return this.state.duration - this.tickingDelta(); }
     
-    //gives back the minutes left in teh ticking time
-    minutes = () => { return Math.floor(this.elapsing() / 1000 / 60) }
-
-    //gives back the seconds left in teh ticking time
-    seconds = () => { return this.secondsFormatter(Math.floor(this.elapsing() / 1000 % 60)) }
+    
+    
+   
 }
