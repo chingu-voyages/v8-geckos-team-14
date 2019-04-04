@@ -1,5 +1,6 @@
 import React from "react";
 import styled from 'styled-components';
+import ls from 'local-storage';
 
 const Heading = styled.h1`
   color: black;
@@ -7,69 +8,120 @@ const Heading = styled.h1`
   font-weight: bold;
 `;
 
+const TodoDiv = styled.div`
+  box-sizing: border-box;
+  margin: 0;
+  min-width: 250px;
+`;
 
-class ToDo extends React.Component {
+const TodoUl = styled.ul`
+  margin: 0;
+  padding: 0;
+`;
+
+const TodoLi = styled.li`
+  cursor: pointer;
+  position: relative;
+  padding: 5px 40px 12px 8px;
+  background: #eee;
+  font-size: 18px;
+  transition: 0.2s;
+
+  /* make the list items unselectable */
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+`;
+
+const TodoDelete = styled.i`
+  position: absolute;
+  right: 0;
+  top: 0;
+  padding: 12px 16px 12px 16px;
+`;
+
+
+const TodoHeader = styled.div`
+  background-color: transparent;
+  padding: 40px 20px;
+  color: white;
+  text-align: center;
+`;
+
+const TodoInput = styled.input`
+  margin: 0;
+  border: none;
+  border-radius: 0;
+  width: 90%;
+  padding: 5px;
+  float: left;
+  font-size: 16px;
+`;
+
+
+class Todo extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-      visible: 'todo-popup-container-hidden',
-      value: '',
-      todoItems: [],
-      strike: ''
+      visible: ls.get('visible') || 'todo-popup-container-hidden',
+      value: ls.get('value') || '',
+      todoItems:  ls.get('todoItems') || [],
+      strike: ls.get('strike') || ''
     }
+
   }
 
-  toggleClass = (event) => {
-    let visible = {...this.state.visible};
-    if(this.state.visible === 'todo-popup-container-hidden') {
-      visible = 'todo-popup-container';
-      this.setState({visible});
-    } else {
-      visible = 'todo-popup-container-hidden';
-      this.setState({visible});
-    }
-  }
 
   handleChange = (event) => {
     this.setState({value: event.target.value});
+    ls.set('value',event.target.value);
   }
 
   handleSubmit = (event) => {
+
     event.preventDefault();
-    this.setState({
-      value: '',
-      todoItems:[...this.state.todoItems, this.state.value]
-    });
+    if (this.state.value){
+      const newTodoItems = [...this.state.todoItems, this.state.value];
+
+      this.setState({
+        value: '',
+        todoItems: newTodoItems
+      });
+      ls.set('value','');
+      ls.set('todoItems', newTodoItems);
+    }
   }
 
   deleteTodoItem = (key) => {
-    let todoItems = {...this.state.todoItems};
-    delete todoItems[key];
-    this.setState({todoItems});
+    let todoItems = [...this.state.todoItems];
+    todoItems.splice(key, 1);
+    this.setState({todoItems: todoItems});
+    ls.set('todoItems', todoItems);
   }
 
   renderList = (key) => {
     let listItem = this.state.todoItems[key];
     return(
-          <li key={key}> {listItem} <i count={key} className="fa fa-times-circle" onClick={(event) => this.deleteTodoItem(key)}></i></li>
+          <TodoLi key={key}> {listItem} <TodoDelete count={key}  onClick={(event) => this.deleteTodoItem(key)}> &#x2715;</TodoDelete></TodoLi>
     )
   }
 
   render () {
     return (
-      <div className="todo-wrapper">
-        <div className={this.state.visible}>
-          <ul className="todos-here">
+      <TodoDiv>
+          <TodoUl>
             {Object.keys(this.state.todoItems).map(this.renderList)}
-          </ul>
-          <form onSubmit={this.handleSubmit}>
-            <input onChange={this.handleChange} value={this.state.value} className="todo-input" type="text" placeholder="Write your todos here" />
-          </form>
-        </div>
-        <button onClick={this.toggleClass} className="todo-btn">ToDo</button>
-      </div>
+          </TodoUl>
+          <TodoHeader>
+            <form onSubmit={this.handleSubmit}>
+              <TodoInput onChange={this.handleChange} value={this.state.value} type="text" placeholder="Write your todos here" />
+            </form>
+          </TodoHeader>
+      </TodoDiv>
     )
   }
+
 }
 
-export default ToDo;
+export default Todo;

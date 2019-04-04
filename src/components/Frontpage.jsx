@@ -1,8 +1,13 @@
 import React, { Component } from "react";
 import styled from 'styled-components';
+
+
 import SideMenu from "./SideMenu.jsx";
 import ViewRender from './ViewRender.jsx';
 import Quotes from './Quotes.jsx'
+import { Heading } from './SharedStyles.js';
+
+
 
 //stylings for the overall container of the app
 const PageWrapper = styled.div`
@@ -16,8 +21,11 @@ const PageWrapper = styled.div`
   justify-content: center;
 `;
 
+
+
 //styling for the main div where components are loaded in
 const Main = styled.div`
+
   display: flex;
   justify-content: center;
   align-items: center;
@@ -36,13 +44,15 @@ export default class Frontpage extends Component {
   constructor() {
     super();
 
-    this.state = { 
+
+    this.state = {
       mainState: null,
       menuState: null
     };
 
     this.changeView = this.changeView.bind(this);
   }
+
   // Change menu based on state. If the state is same value, it means the button is clicked again, and it should toss the state.
   changeView(value) {
 
@@ -70,6 +80,8 @@ export default class Frontpage extends Component {
 
   render() {
     return (
+
+
       <PageWrapper>
         <SideMenu changeView={this.changeView} />
         <Main>
@@ -78,7 +90,10 @@ export default class Frontpage extends Component {
         <QuoteWrapper>
           <Quotes />
         </QuoteWrapper>
+
       </PageWrapper>
+
+
     );
   }
 }
