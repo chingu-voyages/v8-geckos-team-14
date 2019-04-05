@@ -1,97 +1,14 @@
 import React, { Component } from "react";
 import styled from "styled-components";
 import { Button } from "../SharedStyles.js";
+import { Wrapper, RangeSlider, TimerDisplay, Explainer, Display } from "../pomodoroStyles.js";
 
-const Wrapper = styled.div`
-  background: rgba(0,0,0,0.4);
-  border-radius: 15px;
-  width: 18em;
-  height: 24em;
-  overflow-x: hidden;
-  display: flex;
-  flex-direction:column;
-  justify-content: center;
-`;
-
-const Display = styled.div`
-  display: flex;
-  justify-content: center;
-`;
-
-const RangeSlider = styled.input.attrs(({ inputType, min ,max }) => ({
-    type: inputType,
-    min: min,
-    max: max
-}))`
-    -webkit-appearance: none;
-    width: 70%;
-    border-radius: 5px;  
-    margin: 0 0 1em 15%;
-    height: 1em;
-    background: #d3d3d3;
-    outline: none;
-    -webkit-transition: .2s;
-    transition: opacity .2s;
-
-    &::-webkit-slider-thumb {
-        -webkit-appearance: none;
-        appearance: none;
-        border-radius: 50%;  
-        width: 25px;
-        height: 25px;
-        background: #fff;
-        cursor: pointer;
-    }
-
-    &::-moz-range-thumb {
-        width: 25px;
-        height: 25px;
-        background: #fff;
-        cursor: pointer;
-    }
-`;
-
-const RangeSliderWork = styled(RangeSlider)`
-`;
-
-const RangeSliderBreak = styled(RangeSlider)`
-`;
-
-//the number which display the minutes remaining to work
-const WorkDisplay = styled.h1`
-  color: white;
-  text-shadow: 1px 1px 0px rgba(0,0,0,0.3);
-  font-size: 2em;
-  font-weight: bold;
-  text-align: center;
-  margin-bottom: 0.5em;
-  margin-right: 1em;
-`;
-
-const BreakDisplay = styled.h1`
-  color: white;
-  text-shadow: 1px 1px 0px rgba(0,0,0,0.3);
-  font-size: 2em;
-  font-weight: bold;
-  text-align: center;
-  margin-bottom: 0.5em;
-`;
-
-//the number which display the minutes remaining to work
-const Explainer = styled.h2`
-  margin-bottom: 0.5em;
-  color: white;
-  text-shadow: 2px 2px 0px rgba(0,0,0,0.5);
-  font-size: 1.5em;
-  font-weight: bold;
-  text-align: center;
-`;
-
-const Work = styled(Explainer)`
-`;
-
-const Break = styled(Explainer)`
-`;
+const RangeSliderWork = styled(RangeSlider)``;
+const RangeSliderBreak = styled(RangeSlider)``;
+const WorkDisplay = styled(TimerDisplay)``;
+const BreakDisplay = styled(TimerDisplay)``;
+const Work = styled(Explainer)``;
+const Break = styled(Explainer)``;
 
 //button to start the pomodoro
 const TomatoButton = styled(Button)`
@@ -121,12 +38,13 @@ export default class Pomodoro extends Component {
         super();
         this.state = {
             reset: "Pomodoro",
-            button: <TomatoButton onClick={e => this.startTicking(e)}>Start</TomatoButton>,
-            duration: 15000,
-            break: 300000,
+            button: <TomatoButton onClick={e => this.startWork(e)}>Start</TomatoButton>,
+            duration: 7000,
+            break: 70000,
             start: null,
-            interval: null,
-            display: () => { return Math.floor(this.state.duration / 1000 / 60).toString() + ":" + this.secondsFormatter(Math.floor(this.state.duration / 1000 % 60))}
+            intervalWork: null,
+            intervalBreak: null,
+            display: () => { return Math.floor(this.state.duration / 1000 / 60).toString() + ":" + this.secondsFormatter(Math.floor(this.state.duration / 1000 % 60)) }
         };
     }
 
@@ -150,77 +68,85 @@ export default class Pomodoro extends Component {
                     <WorkDisplay>{this.state.display()}</WorkDisplay>
                     <BreakDisplay>{this.state.display()}</BreakDisplay>
                 </Display>
-                <div>{this.state.button}</div>
+                {this.state.button}
             </Wrapper>
         );
     }
 
-    //starts the pomodoro
-    startTicking = (e) => {
-        e.preventDefault();
+    startWork = (e) => {
+        if (e) {
+            e.preventDefault();
+        }
         this.setState({
             reset: "Reset",
-            button: <TomatoButton onClick={e => this.pauseTicking(e)}>Pause</TomatoButton>
+            button: <TomatoButton onClick={e => this.pauseWork(e)}>Pause</TomatoButton>
         })
-        this.state.interval = setInterval(this.timer, 100);
+        this.state.intervalWork = setInterval(this.timerWork, 10);
     }
 
-    //will containt the functionality to pause the pomodoro
-    pauseTicking = (e) => {
+    pauseWork = (e) => {
         e.preventDefault();
-        clearInterval(this.state.interval);
+        clearInterval(this.state.intervalWork);
         let helpDisplay = this.state.display();
         this.setState({
-            reset: "Reset",
-            button: <TomatoButton onClick={e => this.startTicking(e)}>Start</TomatoButton>,
+            button: <TomatoButton onClick={e => this.startWork(e)}>Start</TomatoButton>,
             duration: this.elapsing(this.state.duration, this.state.start),
             start: null,
             display: () => { return helpDisplay }
         })
     }
 
-    //timer used by the interval --> internal clock of pomodoro
-    //if its the first time, is sets the starts --> date object
-    //later on it updates the display based on the difference between the date object now and our point of reference
-    timer = () => {
+    timerWork = () => {
         if (this.state.start === null) {
             this.setState({ start: Date.now() })
-        } else if (this.elapsing(this.state.duration, this.state.start) < 101) {
-            startBreak();
-        } else {  
-            this.setState({ display: () => { return this.minutes(this.state.duration, this.state.start).toString() + ":" + this.seconds(this.state.duration, this.state.start).toString() }})
+        } else if (this.elapsing(this.state.duration, this.state.start) < 15 ) {
+            this.startBreak();
+        } else {
+            this.setState({ display: () => { return this.minutes(this.state.duration, this.state.start).toString() + ":" + this.seconds(this.state.duration, this.state.start).toString() } })
         }
     }
 
-    startBreak = () => {
-        clearInterval(this.state.interval);
+    startBreak = (e) => {
+        if (e) {
+            e.preventDefault()
+        }
+        clearInterval(this.state.intervalWork);
         this.setState({
-            button: <TomatoButton onClick={e => this.pauseTicking(e)}>Pause</TomatoButton>,
+            reset: "Reset",
+            button: <TomatoButton onClick={e => this.pauseBreak(e)}>Pause</TomatoButton>,
             duration: this.elapsing(this.state.duration, this.state.start),
+            start: null,
+            display: () => { return Math.floor(this.state.break / 1000 / 60).toString() + ":" + this.secondsFormatter(Math.floor(this.state.break / 1000 % 60)) }
+        })
+        this.state.intervalBreak = setInterval(this.timerBreak, 10);
+    }
+
+    pauseBreak = (e) => {
+        e.preventDefault();
+        clearInterval(this.state.intervalBreak);
+        let helpDisplay = this.state.display();
+        this.setState({
+            button: <TomatoButton onClick={e => this.startBreak(e)}>Start</TomatoButton>,
+            break: this.elapsing(this.state.break, this.state.start),
             start: null,
             display: () => { return helpDisplay }
         })
-        // e.preventDefault();
-        // this.setState({
-        //     reset: "Reset",
-        //     button: <TomatoButton onClick={e => this.pauseTicking(e)}>Pause</TomatoButton>
-        // })
-        // this.state.interval = setInterval(this.timer, 100);
     }
 
-    // pauseBreak = (e) => {
+    timerBreak = () => {
+        if (this.state.start === null) {
+            this.setState({ start: Date.now() })
+        } else if (this.elapsing(this.state.break, this.state.start) < 15) {
+            this.startWork();
+        } else {
+            this.setState({ display: () => { return this.minutes(this.state.break, this.state.start).toString() + ":" + this.seconds(this.state.break, this.state.start).toString() } })
+        }
+    }
 
-    //     e.preventDefault();
-    //     clearInterval(this.state.interval);
-    //     let helpDisplay = this.state.display();
-    //     this.setState({
-    //         reset: "Reset",
-    //         button: <TomatoButton onClick={e => this.startTicking(e)}>Start</TomatoButton>,
-    //         duration: this.elapsing(this.state.duration, this.state.start),
-    //         start: null,
-    //         display: () => { return helpDisplay }
-    //     })
-    // }
+    //will be used to ring a sound to the user or send a notification or both
+    ringingBell = () => {
+        
+    }
 
     rangeChange = (e) => {
         e.preventDefault();
@@ -230,16 +156,17 @@ export default class Pomodoro extends Component {
 
     // ------------------ HELPING FUNCTIONS --------------------------------------------------------------------------------
 
-     //gives back the minutes left in teh ticking time
+    // gives back the minutes for the remaining time between duration and the calculated elapsed time
     minutes = (duration, start) => { return Math.floor(this.elapsing(duration, start) / 1000 / 60) }
 
-    //gives back the seconds left in teh ticking time
+    // gives back the minutes for the remaining time between duration and the calculated elapsed time. 
+    // Formatted to display 1 second as 01
     seconds = (duration, start) => { return this.secondsFormatter(Math.floor(this.elapsing(duration, start) / 1000 % 60)) }
 
-    // returns the value of the pomodoro working time and time difference between start and now
+    // returns the difference between the given duration and tickingDelta --> (difference between now and the given start date)
     elapsing = (duration, start) => { return duration - this.tickingDelta(start); }
 
-    // returns the difference between now and when the pomodoro was started
+    // returns the difference between now and the given start date
     tickingDelta = (start) => { return Math.round((start - Date.now()) * -1) }
 
     //if the seconds which is needed to be display is only in 0 didgets it gets a 0 before it.
@@ -248,10 +175,4 @@ export default class Pomodoro extends Component {
         let seconds = currentTime.toString().length == 1 ? "0" + currentTime.toString() : currentTime;
         return seconds
     }
-
-    
-    
-    
-    
-   
 }
