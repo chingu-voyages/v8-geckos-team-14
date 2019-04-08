@@ -1,10 +1,8 @@
 import React, { Component } from "react";
 import CurrentWeather from "../Weather/CurrentWeather.jsx";
 import Forecast from "../Weather/Forecast.jsx";
-import axios from "axios";
-import styled from "styled-components";
 
-const KEY = "eaf3c33b55f54c54af693229192003";
+import styled from "styled-components";
 
 const Wrapper = styled.div`
   overflow: hidden;
@@ -42,67 +40,7 @@ const LoaderText = styled.div`
   margin-top: 20px;
 `;
 
-class WeatherCard extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      temperature: "",
-      latitude: "",
-      longitude: "",
-      summary: "",
-      cityName: "",
-      numForecastDays: 5,
-      isLoading: false
-    };
-  }
-  
-  componentDidMount() {
-    this.getLocation();
-  }
-
-  // Use of APIXU API with latitude and longitude query
-  getWeather() {
-    const { latitude, longitude, numForecastDays } = this.state;
-    const URL = `https://api.apixu.com/v1/forecast.json?key=${KEY}&q=${latitude},${longitude}&days=${numForecastDays}`;
-    axios
-      .get(URL)
-      .then(res => {
-        const data = res.data;
-
-        this.setState({
-          cityName: data.location.name + ", " + data.location.region,
-          summary: data.current.condition.text,
-          temperature: data.current.temp_c,
-          forecastDays: data.forecast.forecastday,
-          iconURL: data.current.condition.icon
-        });
-      })
-      .catch(err => {
-        if (err) console.log(err);
-      });
-  }
-
-  // function using current longitude and latitude of user
-  // This requires authorization from user // Could be changed using IP adress instead, but would be less precise
-  getLocation() {
-    navigator.geolocation.getCurrentPosition(
-      position => {
-        this.setState(
-          prevState => ({
-            latitude: position.coords.latitude,
-            longitude: position.coords.longitude
-          }),
-          () => {
-            this.getWeather();
-          }
-        );
-      },
-      error => this.setState({ forecast: error.message }),
-      { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
-    );
-  }
-  render() {
+const WeatherCard = (props) => {
     const {
       summary,
       temperature,
@@ -110,7 +48,8 @@ class WeatherCard extends Component {
       iconURL,
       forecastDays,
       isLoading
-    } = this.state;
+    } = props;
+
     return (
       <div>
         {isLoading && (
@@ -133,6 +72,5 @@ class WeatherCard extends Component {
       </div>
     );
   }
-}
 
 export default WeatherCard;

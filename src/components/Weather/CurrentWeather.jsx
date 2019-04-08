@@ -81,7 +81,7 @@ const CurrentWeather = (props) => {
       </CurrentHeader>
       <CurrentTemperature>
         <Img>
-          <img src={icon} alt="raining-weather" width="60" height="60" />
+          <img src={icon} alt={summary} width="60" height="60" />
         </Img>
         <Temperature>{roundedTemp}°c</Temperature>
       </CurrentTemperature>
