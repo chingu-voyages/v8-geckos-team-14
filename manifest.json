@@ -13,7 +13,11 @@
     ],
     "persistent": true
   },
-  "permissions": ["tabs", "http://*/*"],
+  "permissions": [
+    "tabs", 
+    "http://*/*",
+    "storage"
+  ],
   "content_scripts": [
     {
       "matches": ["*://*/*"],
