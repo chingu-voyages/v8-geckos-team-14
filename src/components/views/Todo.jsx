@@ -17,6 +17,8 @@ const TodoDiv = styled.div`
 const TodoUl = styled.ul`
   margin: 0;
   padding: 0;
+  overflow: auto;
+  max-height: 500px;
 `;
 
 const TodoLi = styled.li`
@@ -26,6 +28,7 @@ const TodoLi = styled.li`
   background: #eee;
   font-size: 18px;
   transition: 0.2s;
+
 
   /* make the list items unselectable */
   -webkit-user-select: none;
@@ -115,7 +118,13 @@ class Todo extends React.Component {
           </TodoUl>
           <TodoHeader>
             <form onSubmit={this.handleSubmit}>
-              <TodoInput onChange={this.handleChange} value={this.state.value} type="text" placeholder="Write your todos here" />
+              <TodoInput
+                onChange={this.handleChange}
+                value={this.state.value}
+                type="text"
+                placeholder="Write your todos here"
+                maxLength="200"
+              />
             </form>
           </TodoHeader>
       </TodoDiv>
