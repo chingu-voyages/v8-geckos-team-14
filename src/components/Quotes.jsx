@@ -59,12 +59,12 @@ export default class Quotes extends Component {
       .get(URL)
       .then(res => {
         const data = res.data;
-        console.log(data);
-        if (this._isMounted) {
+        const { quoteText, quoteAuthor } = data;
+        if (this._isMounted && quoteText && quoteAuthor) {
           this.setState({
             isLoading: false,
-            quotes: data.quoteText,
-            authors: data.quoteAuthor
+            quotes: quoteText,
+            authors: quoteAuthor
           });
         }
       })
