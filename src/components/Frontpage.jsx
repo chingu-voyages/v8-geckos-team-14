@@ -3,7 +3,6 @@ import styled from "styled-components";
 import SideMenu from "./SideMenu.jsx";
 import ViewRender from "./ViewRender.jsx";
 import Quotes from "./Quotes.jsx";
-import { Heading } from "./SharedStyles.js";
 import axios from "axios";
 const KEY = "eaf3c33b55f54c54af693229192003";
 
@@ -42,13 +41,12 @@ export default class Frontpage extends Component {
     this.state = {
       mainState: null,
       menuState: null,
-      temperature: "",
-      latitude: "",
-      longitude: "",
-      summary: "",
-      cityName: "",
-      numForecastDays: 5,
-      isLoading: false,
+      weather: {
+        temperature: "",
+        summary: "",
+        cityName: "",
+        isLoading: false,
+      }
     };
 
     this.changeView = this.changeView.bind(this);
@@ -58,8 +56,9 @@ export default class Frontpage extends Component {
   }
 
   // Use of APIXU API with latitude and longitude query
-  getWeather() {
-    const { latitude, longitude, numForecastDays } = this.state;
+  getWeather(coords) {
+    const { latitude, longitude } = coords;
+    const numForecastDays = 5;
     const URL = `https://api.apixu.com/v1/forecast.json?key=${KEY}&q=${latitude},${longitude}&days=${numForecastDays}`;
     axios
       .get(URL)
@@ -67,11 +66,14 @@ export default class Frontpage extends Component {
         const data = res.data;
 
         this.setState({
-          cityName: data.location.name + ", " + data.location.region,
-          summary: data.current.condition.text,
-          temperature: data.current.temp_c,
-          forecastDays: data.forecast.forecastday,
-          iconURL: data.current.condition.icon
+          weather: {
+            ...this.state.weather,
+            cityName: data.location.name + ", " + data.location.region,
+            summary: data.current.condition.text,
+            temperature: data.current.temp_c,
+            forecastDays: data.forecast.forecastday,
+            iconURL: data.current.condition.icon
+          }
         });
       })
       .catch(err => {
@@ -84,15 +86,7 @@ export default class Frontpage extends Component {
   getLocation() {
     navigator.geolocation.getCurrentPosition(
       position => {
-        this.setState(
-          prevState => ({
-            latitude: position.coords.latitude,
-            longitude: position.coords.longitude
-          }),
-          () => {
-            this.getWeather();
-          }
-        );
+        this.getWeather(position.coords);
       },
       error =>
         this.setState({
@@ -129,11 +123,12 @@ export default class Frontpage extends Component {
   }
 
   render() {
+    const { weather } = this.state
     return (
       <PageWrapper>
-        <SideMenu changeView={this.changeView} {...this.state} />
+        <SideMenu changeView={this.changeView} weather={weather}/>
         <Main>
-          <ViewRender view={this.state.menuState} />
+          <ViewRender view={this.state.menuState} weather={weather} />
         </Main>
         <QuoteWrapper>
           <Quotes />

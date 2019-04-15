@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import CurrentWeather from "../Weather/CurrentWeather.jsx";
 import Forecast from "../Weather/Forecast.jsx";
 
@@ -42,10 +42,7 @@ const LoaderText = styled.div`
 
 const WeatherCard = (props) => {
     const {
-      summary,
-      temperature,
-      cityName,
-      iconURL,
+      weather,
       forecastDays,
       isLoading
     } = props;
@@ -61,12 +58,12 @@ const WeatherCard = (props) => {
         {!isLoading && (
           <Wrapper>
             <CurrentWeather
-              cityName={cityName}
-              summary={summary}
-              temperature={temperature}
-              icon={iconURL}
+              cityName={weather.cityName}
+              summary={weather.summary}
+              temperature={weather.temperature}
+              icon={weather.iconURL}
             />
-            <Forecast forecastDays={forecastDays} />
+            <Forecast forecastDays={weather.forecastDays} />
           </Wrapper>
         )}
       </div>

@@ -55,7 +55,7 @@ export default class SideMenu extends React.Component {
     }
 
     render() {
-        const { temperature, iconURL, summary } = this.props;
+        const { weather} = this.props;
             return (
               <Menu>
                 <Button
@@ -63,13 +63,13 @@ export default class SideMenu extends React.Component {
                 >
                   <ButtonDetails>
                       <img
-                        src={iconURL}
-                        alt={summary}
+                        src={weather.iconURL}
+                        alt={weather.summary}
                         width="30"
                         height="30"
                       />
                       <br />
-                    {temperature}°c
+                    {weather.temperature}°c
                   </ButtonDetails>
                 </Button>
                 <Button onClick={e => this.changeView(e, "todo")}>
