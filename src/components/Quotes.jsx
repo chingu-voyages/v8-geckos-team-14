@@ -80,22 +80,10 @@ export default class Quotes extends Component {
   render() {
     const { quotes, authors, isLoading } = this.state;
 
-    // Check if there is a quote. If there is no quote and author from the API return default quote from initial state.
-    const quote =
-      (quotes === "" && authors === "") || quotes === undefined
-        ? "Take it easy — but take it." && authors === "Woody Guthrie"
-        : quotes;
-
-    //check if there is an author. If there is none return "Unknown Author". Do not return anything if there is no quote.
-    const author =
-      authors === "" && quote === quotes
-        ? "Unknown Author"
-        : authors;
-
     return !isLoading ? (
       <Wrapper>
-        <Quote>{quote}</Quote>
-        <Author>{author}</Author>
+        <Quote>{quotes}</Quote>
+        <Author>{authors}</Author>
       </Wrapper>
     ) : (
       <Wrapper>Loading...</Wrapper>
