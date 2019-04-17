@@ -11,7 +11,7 @@ const PageWrapper = styled.div`
   width: 100vw;
   min-height: 100vh;
   overflow-x: hidden;
-  background: url("../src/content/gfx/app-bg-image.jpg");
+  background: ${props => `url(${props.background})`};
   background-size: cover;
   background-position: center;
   display: flex;
@@ -33,6 +33,38 @@ const QuoteWrapper = styled.div`
   bottom: 20px;
 `;
 
+// Styling for photo credits
+
+const Credits = styled.div`
+  height: 60px;
+  width: 240px;
+  color: #fff;
+  position: absolute;
+  top: 20px;
+  right: -80px;
+  display: inline-block;
+  font-weight: 500;
+  vertical-align: bottom;
+  justify-content: space-evenly;
+
+`;
+
+const Description = styled.div`
+  font-size: 0.7rem;
+`
+const Link = styled.div`
+  font-size: 0.5rem;
+`;
+
+// Unsplash API Access Key & Secret Key
+
+const API_KEY =
+  "a1914df4b436c9763ac6b0725eb8ba4a5ebd4244745e4c86b54ca80adc360d44";
+
+// URL with all parameters to get access to Unsplash random photo
+
+const URL = `https://api.unsplash.com/photos/random?client_id=${API_KEY}&orientation=landscape`;
+
 //the overall component with everything on screen
 export default class Frontpage extends Component {
   constructor() {
@@ -46,13 +78,18 @@ export default class Frontpage extends Component {
         summary: "",
         cityName: "",
         isLoading: false,
-      }
+      },
+      backgroundImage: "",
+      user: "",
+      location: "",
+      links: ""
     };
 
     this.changeView = this.changeView.bind(this);
   }
   componentDidMount() {
     this.getLocation();
+    this.getBackgroundImage();
   }
 
   // Use of APIXU API with latitude and longitude query
@@ -122,10 +159,40 @@ export default class Frontpage extends Component {
     }
   }
 
+  // Function to fetch images from Unsplash API
+  getBackgroundImage = () => {
+    axios
+      .get(URL)
+      .then(res => {
+        const data = res.data
+        console.log(data.location)
+        const { user, links } = data;
+        const backgroundImage = data.urls.full
+        if (backgroundImage && user) {
+          this.setState({
+            backgroundImage: data.urls.full,
+            user: user.name,
+            location: location.title,
+            links: links.html
+          });
+        } else {
+          this.setState({
+            backgroundImage: null,
+            location: "No description",
+            user: "No user",
+            links: "no link"
+          })
+        }
+      })
+      .catch(err => {
+        if (err) console.log(`Unable to fetch API see below${err}`);
+      });
+  }
+
   render() {
-    const { weather } = this.state
+    const { weather, backgroundImage, user, location, links } = this.state
     return (
-      <PageWrapper>
+      <PageWrapper background={backgroundImage}>
         <SideMenu changeView={this.changeView} weather={weather}/>
         <Main>
           <ViewRender view={this.state.menuState} weather={weather} />
@@ -133,7 +200,12 @@ export default class Frontpage extends Component {
         <QuoteWrapper>
           <Quotes />
         </QuoteWrapper>
+        <Credits>
+          <Description>{location}</Description>
+          <Link><a href={links}>Photo by {user} / Unsplash</a></Link>
+        </Credits>
       </PageWrapper>
     );
   }
 }
+

@@ -6,12 +6,9 @@ const Wrapper = styled.div`
     justify-content: space-between;
     align-items: center;
     color: white;
-    font-size: 30px;
+    font-size: 0px;
     font-weight: bold;
     padding: 10px 30px;
-    border: 1px solid white;
-    background: url('../src/content/gfx/app-bg-image-blurry.jpg');
-    background-size: cover;
     background-position: center;
     background-attachment: fixed;
     box-shadow: 0 0 0 rgba(0,0,0, 0.2);
