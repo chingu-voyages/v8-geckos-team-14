@@ -6,9 +6,12 @@ const Wrapper = styled.div`
     justify-content: space-between;
     align-items: center;
     color: white;
-    font-size: 0px;
+    font-size: 30px;
     font-weight: bold;
     padding: 10px 30px;
+    border: 1px solid white;
+    background: url('../src/content/gfx/app-bg-image-blurry.jpg');
+    background-size: cover;
     background-position: center;
     background-attachment: fixed;
     box-shadow: 0 0 0 rgba(0,0,0, 0.2);
@@ -68,14 +71,14 @@ export default class Home extends Component {
 
     componentDidMount() {
         var h = new Date().getHours() % 12;
-        
+        console.log(h)
         var greeting = '';
-        if(h <= 0 && h < 12) {
+        if(h > 0 && h < 12) {
             greeting = "Good Morning,"
-        } else if(h <= 12 && h < 18) {
-            greeting = "Good Evening,"
+        } else if(h >= 12 && h < 18) {
+            greeting = "Good Afternoon,"
         } else {
-            greeting = "Good Night,"
+            greeting = "Good Evenning,"
         }
 
         this.setState({

@@ -4,7 +4,6 @@ import SideMenu from "./SideMenu.jsx";
 import ViewRender from "./ViewRender.jsx";
 import Quotes from "./Quotes.jsx";
 import axios from "axios";
-const KEY = "eaf3c33b55f54c54af693229192003";
 
 //stylings for the overall container of the app
 const PageWrapper = styled.div`
@@ -56,14 +55,19 @@ const Link = styled.div`
   font-size: 0.5rem;
 `;
 
+
+// APIXU key to get weather information
+
+const WEATHER_KEY = "eaf3c33b55f54c54af693229192003";
+
 // Unsplash API Access Key & Secret Key
 
-const API_KEY =
+const PHOTO_KEY =
   "a1914df4b436c9763ac6b0725eb8ba4a5ebd4244745e4c86b54ca80adc360d44";
 
 // URL with all parameters to get access to Unsplash random photo
 
-const URL = `https://api.unsplash.com/photos/random?client_id=${API_KEY}&orientation=landscape`;
+const URL = `https://api.unsplash.com/photos/random?client_id=${PHOTO_KEY}&orientation=landscape`;
 
 //the overall component with everything on screen
 export default class Frontpage extends Component {
@@ -81,7 +85,7 @@ export default class Frontpage extends Component {
       },
       backgroundImage: "",
       user: "",
-      location: "",
+      description: "",
       links: ""
     };
 
@@ -96,7 +100,7 @@ export default class Frontpage extends Component {
   getWeather(coords) {
     const { latitude, longitude } = coords;
     const numForecastDays = 5;
-    const URL = `https://api.apixu.com/v1/forecast.json?key=${KEY}&q=${latitude},${longitude}&days=${numForecastDays}`;
+    const URL = `https://api.apixu.com/v1/forecast.json?key=${WEATHER_KEY}&q=${latitude},${longitude}&days=${numForecastDays}`;
     axios
       .get(URL)
       .then(res => {
@@ -165,20 +169,21 @@ export default class Frontpage extends Component {
       .get(URL)
       .then(res => {
         const data = res.data
-        console.log(data.location)
+        console.log(data)
         const { user, links } = data;
-        const backgroundImage = data.urls.full
+        const description = data.alt_description.charAt(0).toUpperCase() + data.alt_description.slice(1);
+        const backgroundImage = data.urls.regular
         if (backgroundImage && user) {
           this.setState({
-            backgroundImage: data.urls.full,
+            backgroundImage: backgroundImage,
             user: user.name,
-            location: location.title,
+            description: description,
             links: links.html
           });
         } else {
           this.setState({
             backgroundImage: null,
-            location: "No description",
+            description: "No description",
             user: "No user",
             links: "no link"
           })
@@ -190,7 +195,7 @@ export default class Frontpage extends Component {
   }
 
   render() {
-    const { weather, backgroundImage, user, location, links } = this.state
+    const { weather, backgroundImage, user, description, links } = this.state
     return (
       <PageWrapper background={backgroundImage}>
         <SideMenu changeView={this.changeView} weather={weather}/>
@@ -201,7 +206,7 @@ export default class Frontpage extends Component {
           <Quotes />
         </QuoteWrapper>
         <Credits>
-          <Description>{location}</Description>
+          <Description>{description}</Description>
           <Link><a href={links}>Photo by {user} / Unsplash</a></Link>
         </Credits>
       </PageWrapper>
