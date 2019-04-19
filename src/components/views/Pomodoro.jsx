@@ -1,15 +1,21 @@
 import React, { Component } from "react";
 import styled from "styled-components";
 import { Button } from "../SharedStyles.js";
-import { Wrapper, RangeSlider, Explainer, Display } from "../pomodoroStyles.js";
+import '../pomodoro.css';
 
 const red = "#FFC9C9";
 const yellow = "#FFEEC9";
 
-const RangeSliderWork = styled(RangeSlider)`background: ${yellow};`;
-const RangeSliderBreak = styled(RangeSlider)`background: ${red};`;
-const Work = styled(Explainer)`color: ${yellow};`;
-const Break = styled(Explainer)`color: ${red};`;
+const Wrapper = styled.div`
+  background: rgba(0,0,0,0.5);
+  border-radius: 15px;
+  width: 18em;
+  height: 22em;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction:column;
+  justify-content: center;
+`;
 
 const Reset = styled(Button)`
   margin: 0 0 1.5em calc(50% - 4.5em);
@@ -21,6 +27,23 @@ const Reset = styled(Button)`
   width: 9em;
   font-size: 0.8em;
   text-shadow: 1px 1px 0px rgba(0,0,0,0.3);
+`;
+
+//the number which display the minutes remaining to work
+export const Explainer = styled.h2`
+  margin-bottom: 0.5em;
+  text-shadow: 1px 1px 0px rgba(0,0,0,0.5);
+  font-size: 1.5em;
+  font-weight: bold;
+  text-align: center;
+`;
+
+const Work = styled(Explainer)`color: ${yellow};`;
+const Break = styled(Explainer)`color: ${red};`;
+
+const Display = styled.div`
+  display: flex;
+  justify-content: center;
 `;
 
 //the number which display the minutes remaining to work
@@ -46,6 +69,31 @@ const TomatoButton = styled(Button)`
   text-shadow: 1px 1px 0px rgba(0,0,0,0.3);
 `;
 
+class Range extends React.Component {
+    constructor(props) {
+        super(props);
+    }
+
+    updateRange = (e) => {
+        this.props.updateRange(this.props.state, e.target.value);
+    }
+
+    render() {
+        return (
+            <div>
+                <input id={this.props.id} type="range" style={{background: this.props.color}}
+                    value={this.props.range}
+                    min="60000"
+                    max="3600000"
+                    step="60000"
+                    onChange={this.updateRange}
+                />
+                <span id="output" style={{ color: this.props.color }}>{Math.floor(this.props.range / 1000 / 60)}</span>
+            </div>
+        )
+    }
+}
+
 
 export default class Pomodoro extends Component {
     constructor() {
@@ -54,8 +102,8 @@ export default class Pomodoro extends Component {
             reset: "Pomodoro",
             timesave: [],
             button: <TomatoButton onClick={e => this.firstCycle(e)}>Start</TomatoButton>,
-            duration: 7000,
-            break: 11000,
+            duration: 1500000,
+            break: 300000,
             start: null,
             intervalWork: null,
             intervalBreak: null,
@@ -68,21 +116,26 @@ export default class Pomodoro extends Component {
             <Wrapper>
                 <Reset onClick={e => this.reset(e)}>{this.state.reset}</Reset>
                 <Work>Work time</Work>
-                <RangeSliderWork
-                    type="range"
-                    min="1"
-                    max="59"
-                    onChange={e => this.rangeChange(e)} />
+                <Range range={this.state.duration} updateRange={this.updateRange} state={"duration"} color={yellow} id={"rangeWork"}/>
                 <Break>Break time</Break>
-                <RangeSliderBreak
-                    type="range"
-                    min="1"
-                    max="59"
-                    onChange={e => this.rangeChange(e)} />
+                <Range range={this.state.break} updateRange={this.updateRange} state={"break"} color={red} id={"rangeBreak"}/>
                 <Display>{this.state.display()}</Display>
                 {this.state.button}
             </Wrapper>
         );
+    }
+
+    updateRange = (state, val) => {
+        if (state == "duration") {
+            this.setState({
+                duration: val
+            })  
+        } else {
+            this.setState({
+                break: val
+            })
+        }
+        
     }
 
     firstCycle = (e) => {
@@ -92,6 +145,10 @@ export default class Pomodoro extends Component {
             reset: "Reset"
         })
         document.title = "Work!";
+        document.getElementById("rangeWork").disabled = true;
+        document.getElementById("rangeWork").style.background = "gray";
+        document.getElementById("rangeBreak").disabled = true;
+        document.getElementById("rangeBreak").style.background = "gray";
         this.startWork()
     }
 
@@ -199,11 +256,6 @@ export default class Pomodoro extends Component {
         audio.play();
     }
 
-    rangeChange = (e) => {
-        e.preventDefault();
-        alert("a");
-    }
-
     reset = (e) => {
         e.preventDefault();
         clearInterval(this.state.intervalWork);
@@ -212,13 +264,18 @@ export default class Pomodoro extends Component {
             reset: "Pomodoro",
             timesave: [],
             button: <TomatoButton onClick={e => this.firstCycle(e)}> Start</TomatoButton >,
-            duration: 7000,
-            break: 11000,
+            duration: 1500000,
+            break: 300000,
             start: null,
             intervalWork: null,
             intervalBreak: null,
             display: () => { return <TimerDisplay>{Math.floor(this.state.duration / 1000 / 60).toString() + ":" + this.secondsFormatter(Math.floor(this.state.duration / 1000 % 60))}</TimerDisplay> }
         })
+        document.getElementById("rangeWork").disabled = false;
+        document.getElementById("rangeWork").style.background = yellow;
+        document.getElementById("rangeBreak").disabled = false;
+        document.getElementById("rangeBreak").style.background = red;
+        document.title = "MomenDev";
     }
 
 
