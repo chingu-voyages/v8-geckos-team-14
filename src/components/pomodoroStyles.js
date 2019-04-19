@@ -6,10 +6,10 @@ export const Display = styled.div`
 `;
 
 export const Wrapper = styled.div`
-  background: rgba(0,0,0,0.4);
+  background: rgba(0,0,0,0.5);
   border-radius: 15px;
   width: 18em;
-  height: 24em;
+  height: 22em;
   overflow-x: hidden;
   display: flex;
   flex-direction:column;
@@ -50,21 +50,10 @@ export const RangeSlider = styled.input.attrs(({ inputType, min, max }) => ({
 `;
 
 //the number which display the minutes remaining to work
-export const TimerDisplay = styled.h1`
-  color: white;
-  text-shadow: 1px 1px 0px rgba(0,0,0,0.3);
-  font-size: 2em;
-  font-weight: bold;
-  text-align: center;
-  margin-bottom: 0.5em;
-  margin-right: 1em;
-`;
-
-//the number which display the minutes remaining to work
 export const Explainer = styled.h2`
   margin-bottom: 0.5em;
   color: white;
-  text-shadow: 2px 2px 0px rgba(0,0,0,0.5);
+  text-shadow: 1px 1px 0px rgba(0,0,0,0.5);
   font-size: 1.5em;
   font-weight: bold;
   text-align: center;

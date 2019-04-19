@@ -1,28 +1,19 @@
 import React, { Component } from "react";
 import styled from "styled-components";
 import { Button } from "../SharedStyles.js";
-import { Wrapper, RangeSlider, TimerDisplay, Explainer, Display } from "../pomodoroStyles.js";
+import { Wrapper, RangeSlider, Explainer, Display } from "../pomodoroStyles.js";
 
-const RangeSliderWork = styled(RangeSlider)``;
-const RangeSliderBreak = styled(RangeSlider)``;
-const WorkDisplay = styled(TimerDisplay)``;
-const BreakDisplay = styled(TimerDisplay)``;
-const Work = styled(Explainer)``;
-const Break = styled(Explainer)``;
+const red = "#FFC9C9";
+const yellow = "#FFEEC9";
 
-//button to start the pomodoro
-const TomatoButton = styled(Button)`
-  margin: 0 0 0 calc(50% - 2.5em);
-  position: relative;
-  padding: 0;
-  height: 5em;
-  width: 5em;
-  font-size: 1.5em;
-  text-shadow: 1px 1px 0px rgba(0,0,0,0.3);
-`;
+const RangeSliderWork = styled(RangeSlider)`background: ${yellow};`;
+const RangeSliderBreak = styled(RangeSlider)`background: ${red};`;
+const Work = styled(Explainer)`color: ${yellow};`;
+const Break = styled(Explainer)`color: ${red};`;
 
 const Reset = styled(Button)`
-  margin: 0 0 1em calc(50% - 4.5em);
+  margin: 0 0 1.5em calc(50% - 4.5em);
+  background: transparent;
   border-radius: 5px;
   position: relative;
   padding: 0;
@@ -32,55 +23,97 @@ const Reset = styled(Button)`
   text-shadow: 1px 1px 0px rgba(0,0,0,0.3);
 `;
 
+//the number which display the minutes remaining to work
+export const TimerDisplay = styled.h1`
+  color: ${props => props.break ? red : yellow};
+  text-shadow: 1px 1px 0px rgba(0,0,0,0.3);
+  font-size: 2.5em;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 0.3em;
+`;
+
+//button to start the pomodoro
+const TomatoButton = styled(Button)`
+  background: transparent;
+  margin: 0 0 0 calc(50% - 3em);
+  border-radius: 20px;
+  position: relative;
+  padding: 0;
+  height: 3em;
+  width: 6em;
+  font-size: 1.5em;
+  text-shadow: 1px 1px 0px rgba(0,0,0,0.3);
+`;
+
 
 export default class Pomodoro extends Component {
     constructor() {
         super();
         this.state = {
             reset: "Pomodoro",
-            button: <TomatoButton onClick={e => this.startWork(e)}>Start</TomatoButton>,
+            timesave: [],
+            button: <TomatoButton onClick={e => this.firstCycle(e)}>Start</TomatoButton>,
             duration: 7000,
-            break: 70000,
+            break: 11000,
             start: null,
             intervalWork: null,
             intervalBreak: null,
-            display: () => { return Math.floor(this.state.duration / 1000 / 60).toString() + ":" + this.secondsFormatter(Math.floor(this.state.duration / 1000 % 60)) }
+            display: () => {return <TimerDisplay>{Math.floor(this.state.duration / 1000 / 60).toString() + ":" + this.secondsFormatter(Math.floor(this.state.duration / 1000 % 60))}</TimerDisplay>}
         };
     }
 
     render() {
         return (
             <Wrapper>
-                <Reset>{this.state.reset}</Reset>
+                <Reset onClick={e => this.reset(e)}>{this.state.reset}</Reset>
                 <Work>Work time</Work>
                 <RangeSliderWork
                     type="range"
                     min="1"
                     max="59"
-                    onChange={(e) => this.rangeChange(e)} />
+                    onChange={e => this.rangeChange(e)} />
                 <Break>Break time</Break>
                 <RangeSliderBreak
                     type="range"
                     min="1"
                     max="59"
-                    onChange={(e) => this.rangeChange(e)} />
-                <Display>
-                    <WorkDisplay>{this.state.display()}</WorkDisplay>
-                    <BreakDisplay>{this.state.display()}</BreakDisplay>
-                </Display>
+                    onChange={e => this.rangeChange(e)} />
+                <Display>{this.state.display()}</Display>
                 {this.state.button}
             </Wrapper>
         );
     }
 
-    startWork = (e) => {
+    firstCycle = (e) => {
+        e.preventDefault();
+        this.setState({
+            timesave: [this.state.duration, this.state.break],
+            reset: "Reset"
+        })
+        document.title = "Work!";
+        this.startWork()
+    }
+
+    startWork = (e, newRound) => {
         if (e) {
             e.preventDefault();
         }
-        this.setState({
-            reset: "Reset",
-            button: <TomatoButton onClick={e => this.pauseWork(e)}>Pause</TomatoButton>
-        })
+        clearInterval(this.state.intervalBreak);
+        if (newRound) {
+            this.setState({
+                button: <TomatoButton onClick={e => this.pauseWork(e)}>Pause</TomatoButton>,
+                start: null,
+                display: () => { return <TimerDisplay>{Math.floor(this.state.duration / 1000 / 60).toString() + ":" + this.secondsFormatter(Math.floor(this.state.duration / 1000 % 60 - 1))}</TimerDisplay> }
+            })
+        } else {
+            this.setState({
+                button: <TomatoButton onClick={e => this.pauseWork(e)}>Pause</TomatoButton>,
+                start: null,
+                display: () => { return <TimerDisplay>{Math.floor(this.state.duration / 1000 / 60).toString() + ":" + this.secondsFormatter(Math.floor(this.state.duration / 1000 % 60))}</TimerDisplay> }
+            })
+        }
+        
         this.state.intervalWork = setInterval(this.timerWork, 10);
     }
 
@@ -89,7 +122,7 @@ export default class Pomodoro extends Component {
         clearInterval(this.state.intervalWork);
         let helpDisplay = this.state.display();
         this.setState({
-            button: <TomatoButton onClick={e => this.startWork(e)}>Start</TomatoButton>,
+            button: <TomatoButton onClick={e => this.startWork(e, false)}>Resume</TomatoButton>,
             duration: this.elapsing(this.state.duration, this.state.start),
             start: null,
             display: () => { return helpDisplay }
@@ -100,24 +133,35 @@ export default class Pomodoro extends Component {
         if (this.state.start === null) {
             this.setState({ start: Date.now() })
         } else if (this.elapsing(this.state.duration, this.state.start) < 15 ) {
-            this.startBreak();
+            this.setState({
+                duration: this.state.timesave[0],
+                break: this.state.timesave[1]
+            })
+            this.ringingBell("Break!");
+            this.startBreak(false, true);
         } else {
-            this.setState({ display: () => { return this.minutes(this.state.duration, this.state.start).toString() + ":" + this.seconds(this.state.duration, this.state.start).toString() } })
+            this.setState({ display: () => { return <TimerDisplay>{this.minutes(this.state.duration, this.state.start).toString() + ":" + this.seconds(this.state.duration, this.state.start).toString()}</TimerDisplay> } })
         }
     }
 
-    startBreak = (e) => {
+    startBreak = (e, newRound) => {
         if (e) {
             e.preventDefault()
         }
         clearInterval(this.state.intervalWork);
-        this.setState({
-            reset: "Reset",
-            button: <TomatoButton onClick={e => this.pauseBreak(e)}>Pause</TomatoButton>,
-            duration: this.elapsing(this.state.duration, this.state.start),
-            start: null,
-            display: () => { return Math.floor(this.state.break / 1000 / 60).toString() + ":" + this.secondsFormatter(Math.floor(this.state.break / 1000 % 60)) }
-        })
+        if (newRound) {
+            this.setState({
+                button: <TomatoButton onClick={e => this.pauseBreak(e)}>Pause</TomatoButton>,
+                start: null,
+                display: () => { return <TimerDisplay break>{Math.floor(this.state.break / 1000 / 60).toString() + ":" + this.secondsFormatter(Math.floor(this.state.break / 1000 % 60 - 1))}</TimerDisplay> }
+            })
+        } else {
+            this.setState({
+                button: <TomatoButton onClick={e => this.pauseBreak(e)}>Pause</TomatoButton>,
+                start: null,
+                display: () => { return <TimerDisplay break>{Math.floor(this.state.break / 1000 / 60).toString() + ":" + this.secondsFormatter(Math.floor(this.state.break / 1000 % 60))}</TimerDisplay> }
+            })
+        }
         this.state.intervalBreak = setInterval(this.timerBreak, 10);
     }
 
@@ -126,7 +170,7 @@ export default class Pomodoro extends Component {
         clearInterval(this.state.intervalBreak);
         let helpDisplay = this.state.display();
         this.setState({
-            button: <TomatoButton onClick={e => this.startBreak(e)}>Start</TomatoButton>,
+            button: <TomatoButton onClick={e => this.startBreak(e, false)}>Resume</TomatoButton>,
             break: this.elapsing(this.state.break, this.state.start),
             start: null,
             display: () => { return helpDisplay }
@@ -137,20 +181,44 @@ export default class Pomodoro extends Component {
         if (this.state.start === null) {
             this.setState({ start: Date.now() })
         } else if (this.elapsing(this.state.break, this.state.start) < 15) {
-            this.startWork();
+            this.setState({
+                duration: this.state.timesave[0],
+                break: this.state.timesave[1]
+            })
+            this.ringingBell("Work!");
+            this.startWork(false, true);
         } else {
-            this.setState({ display: () => { return this.minutes(this.state.break, this.state.start).toString() + ":" + this.seconds(this.state.break, this.state.start).toString() } })
+            this.setState({ display: () => { return <TimerDisplay break>{this.minutes(this.state.break, this.state.start).toString() + ":" + this.seconds(this.state.break, this.state.start).toString()}</TimerDisplay>} })
         }
     }
 
     //will be used to ring a sound to the user or send a notification or both
-    ringingBell = () => {
-        
+    ringingBell = (text) => {
+        document.title = text;
+        let audio = new Audio('../src/content/music/problematist__dhumm.ogg');
+        audio.play();
     }
 
     rangeChange = (e) => {
         e.preventDefault();
         alert("a");
+    }
+
+    reset = (e) => {
+        e.preventDefault();
+        clearInterval(this.state.intervalWork);
+        clearInterval(this.state.intervalBreak);
+        this.setState({
+            reset: "Pomodoro",
+            timesave: [],
+            button: <TomatoButton onClick={e => this.firstCycle(e)}> Start</TomatoButton >,
+            duration: 7000,
+            break: 11000,
+            start: null,
+            intervalWork: null,
+            intervalBreak: null,
+            display: () => { return <TimerDisplay>{Math.floor(this.state.duration / 1000 / 60).toString() + ":" + this.secondsFormatter(Math.floor(this.state.duration / 1000 % 60))}</TimerDisplay> }
+        })
     }
 
 
