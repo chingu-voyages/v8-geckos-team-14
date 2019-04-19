@@ -17,26 +17,38 @@ const View = styled.div`
 
 // This function is triggered by a script from FrontPage.jsx.
 // All views here are hidden except default view. Views are now hidden / unhidden, instead of swapped. This ensures that we always keep the state.
-const ViewRender = ({ view }) => {
+class ViewRender extends Component {
+
+  constructor(props) {
+    super(props);
+  }
+
+  render() {
+    const { view, weather } = this.props
     return (
       <div>
         <View id="weather" className="view">
-          <Weather />
+          <Weather weather={weather} />
         </View>
         <View id="todo" className="view">
           <Todo />
         </View>
-        <View id="pomodoro" className="view view-active">
+        <View id="pomodoro" className="view">
           <Pomodoro />
         </View>
         <View id="picture" className="view">
           <PictureInfo />
         </View>
-        <View id="home" className="view" data-view="home">
+        <View
+          id="home"
+          className="view view-active"
+          data-view="home"
+        >
           <Home />
         </View>
       </div>
     );
+  }
 }
 
 export default ViewRender;
