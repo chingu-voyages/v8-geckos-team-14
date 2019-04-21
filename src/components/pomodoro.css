@@ -1,9 +1,9 @@
-#output {
+.rangeLabel {
     color: #fff;
     width: 10%;
     font-size: 1.4em;
     border-radius: 2px;
-    margin-left: 0.5em;
+    margin-left: 11px;
     text-align: center;
     position: relative;
     text-shadow: 0px 0px 1px rgba(255, 255, 255, 1);
@@ -13,16 +13,16 @@
 #rangeWork, #rangeBreak {
   -webkit-appearance: none;
   outline: none;
-  margin: 0 0 1em 9%;
-  height: 1em;
+  margin: 0 0 13px 9%;
+  height: 13px;
   width: 70%;
   border-radius: 5px;
 }
 
 #rangeWork::-webkit-slider-thumb, #rangeBreak::-webkit-slider-thumb {
     -webkit-appearance: none;
-    width: 1.7em;
-    height: 1.7em;
+    width: 24px;
+    height: 24px;
     border-radius: 5px;
     background: white;
     border: 1px solid rgb(73, 73, 73);
@@ -31,8 +31,8 @@
 /* FIREFOX */
 #rangeWork::-moz-range-thumb, #rangeBreak::-moz-range-thumb {
   border: none;
-  width: 1.7em;
-  height: 1.7em;
+  width: 24px;
+  height: 24px;
   border-radius: 50%;
   background: white;
   cursor: pointer;

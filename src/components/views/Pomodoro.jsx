@@ -10,39 +10,39 @@ const yellow = "#FFEEC9";
 const Wrapper = styled.div`
   background: rgba(0,0,0,0.5);
   border-radius: 15px;
-  width: 18em;
-  height: 22em;
+  width: 288px;
+  height: 350px;
   display: flex;
   flex-direction:column;
   justify-content: center;
 `;
 
 //The Pomodoro/Reset Button on top
-const Reset = styled(Button)`
-  margin: 0 0 1.5em calc(50% - 4.5em);
+const ResetButton = styled(Button)`
+  margin: 0 0 19px 86px;
   background: transparent;
   border-radius: 5px;
   position: relative;
   padding: 0;
-  height: 3em;
-  width: 9em;
+  height: 39px;
+  width: 116px;
   font-size: 0.8em;
   text-shadow: 1px 1px 0px rgba(0,0,0,0.3);
 `;
 
 //2 Texts: "Work Time" and "Break time"
-export const Explainer = styled.h2`
-  margin-bottom: 0.5em;
+export const ExplanationText = styled.h2`
+  margin-bottom: 12px;
   text-shadow: 1px 1px 0px rgba(0,0,0,0.5);
   font-size: 1.5em;
   font-weight: bold;
   text-align: center;
 `;
-const Work = styled(Explainer)`color: ${yellow};`;
-const Break = styled(Explainer)`color: ${red};`;
+const WorkText = styled(ExplanationText)`color: ${yellow};`;
+const BreakText = styled(ExplanationText)`color: ${red};`;
 
 //the div surrounding the numbers of the current time
-const Display = styled.div`
+const DisplayDiv = styled.div`
   display: flex;
   justify-content: center;
 `;
@@ -54,18 +54,18 @@ export const TimerDisplay = styled.h1`
   font-size: 2.5em;
   font-weight: bold;
   text-align: center;
-  margin-bottom: 0.3em;
+  margin-bottom: 12px;
 `;
 
 //button to start/pause the pomodoro
-const TomatoButton = styled(Button)`
+const StartButton = styled(Button)`
   background: transparent;
-  margin: 0 0 0 calc(50% - 3em);
+  margin: 0 0 0 72px;
   border-radius: 20px;
   position: relative;
   padding: 0;
-  height: 3em;
-  width: 6em;
+  height: 72px;
+  width: 144px;
   font-size: 1.5em;
   text-shadow: 1px 1px 0px rgba(0,0,0,0.3);
 `;
@@ -92,7 +92,7 @@ class Range extends React.Component {
                     onChange={this.updateRange}
                 />
                 {/* displays the number selected as inputs on the right side */}
-                <span id="output" style={{ color: this.props.color }}>{Math.floor(this.props.range / 1000 / 60)}</span>
+                <span className="rangeLabel" style={{ color: this.props.color }}>{Math.floor(this.props.range / 1000 / 60)}</span>
             </div>
         )
     }
@@ -107,7 +107,7 @@ export default class Pomodoro extends Component {
             reset: "Pomodoro",
             timesave: [],
             //the start/pause/resume button
-            button: <TomatoButton onClick={e => this.firstCycle(e)}>Start</TomatoButton>,
+            button: <StartButton onClick={e => this.firstCycle(e)}>Start</StartButton>,
             //worktime in millisconds
             duration: 1500000,
             //the breaktime in milliseconds
@@ -125,13 +125,13 @@ export default class Pomodoro extends Component {
     render() {
         return (
             <Wrapper>
-                <Reset onClick={e => this.reset(e)}>{this.state.reset}</Reset>
-                <Work>Work time</Work>
+                <ResetButton onClick={e => this.reset(e)}>{this.state.reset}</ResetButton>
+                <WorkText>Work time</WorkText>
                 <Range range={this.state.duration} updateRange={this.updateRange} state={"duration"} color={yellow} id={"rangeWork"}/>
-                <Break>Break time</Break>
+                <BreakText>Break time</BreakText>
                 <Range range={this.state.break} updateRange={this.updateRange} state={"break"} color={red} id={"rangeBreak"}/>
                 {/* displays the time output */}
-                <Display>{this.state.display()}</Display>
+                <DisplayDiv>{this.state.display()}</DisplayDiv>
                 {/* the start/pause button */}
                 {this.state.button}
             </Wrapper>
@@ -181,14 +181,14 @@ export default class Pomodoro extends Component {
         if (newRound) {
             this.setState({
                 //button changes to enable pausing
-                button: <TomatoButton onClick={e => this.pauseWork(e)}>Pause</TomatoButton>,
+                button: <StartButton onClick={e => this.pauseWork(e)}>Pause</StartButton>,
                 start: null,
                 //plain display of the working time
                 display: () => { return <TimerDisplay>{Math.floor(this.state.duration / 1000 / 60).toString() + ":" + this.secondsFormatter(Math.floor(this.state.duration / 1000 % 60 - 1))}</TimerDisplay> }
             })
         } else {
             this.setState({
-                button: <TomatoButton onClick={e => this.pauseWork(e)}>Pause</TomatoButton>,
+                button: <StartButton onClick={e => this.pauseWork(e)}>Pause</StartButton>,
                 start: null,
                 display: () => { return <TimerDisplay>{Math.floor(this.state.duration / 1000 / 60).toString() + ":" + this.secondsFormatter(Math.floor(this.state.duration / 1000 % 60))}</TimerDisplay> }
             })
@@ -204,7 +204,7 @@ export default class Pomodoro extends Component {
         //prevents weird twitching of the display text
         let helpDisplay = this.state.display();
         this.setState({
-            button: <TomatoButton onClick={e => this.startWork(e, false)}>Resume</TomatoButton>,
+            button: <StartButton onClick={e => this.startWork(e, false)}>Resume</StartButton>,
             //saves the remaining time as the new duration time. Will be reseted when switching to break time
             duration: this.elapsing(this.state.duration, this.state.start),
             start: null,
@@ -242,13 +242,13 @@ export default class Pomodoro extends Component {
         //needs a correction of the display when there is a switch from the working time.
         if (newRound) {
             this.setState({
-                button: <TomatoButton onClick={e => this.pauseBreak(e)}>Pause</TomatoButton>,
+                button: <StartButton onClick={e => this.pauseBreak(e)}>Pause</StartButton>,
                 start: null,
                 display: () => { return <TimerDisplay break>{Math.floor(this.state.break / 1000 / 60).toString() + ":" + this.secondsFormatter(Math.floor(this.state.break / 1000 % 60 - 1))}</TimerDisplay> }
             })
         } else {
             this.setState({
-                button: <TomatoButton onClick={e => this.pauseBreak(e)}>Pause</TomatoButton>,
+                button: <StartButton onClick={e => this.pauseBreak(e)}>Pause</StartButton>,
                 start: null,
                 display: () => { return <TimerDisplay break>{Math.floor(this.state.break / 1000 / 60).toString() + ":" + this.secondsFormatter(Math.floor(this.state.break / 1000 % 60))}</TimerDisplay> }
             })
@@ -262,7 +262,7 @@ export default class Pomodoro extends Component {
         clearInterval(this.state.intervalBreak);
         let helpDisplay = this.state.display();
         this.setState({
-            button: <TomatoButton onClick={e => this.startBreak(e, false)}>Resume</TomatoButton>,
+            button: <StartButton onClick={e => this.startBreak(e, false)}>Resume</StartButton>,
             break: this.elapsing(this.state.break, this.state.start),
             start: null,
             display: () => { return helpDisplay }
@@ -304,7 +304,7 @@ export default class Pomodoro extends Component {
         this.setState({
             reset: "Pomodoro",
             timesave: [],
-            button: <TomatoButton onClick={e => this.firstCycle(e)}> Start</TomatoButton >,
+            button: <StartButton onClick={e => this.firstCycle(e)}> Start</StartButton >,
             duration: 1500000,
             break: 300000,
             start: null,
