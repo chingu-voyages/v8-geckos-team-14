@@ -5,7 +5,7 @@ import Home from './views/Home.jsx';
 import PictureInfo from './views/PictureInfo.jsx';
 import Pomodoro from './views/Pomodoro.jsx';
 import Weather from './views/Weather.jsx';
-
+import Settings from './views/Settings.jsx';
 
 const View = styled.div`
     display: none;
@@ -24,7 +24,7 @@ class ViewRender extends Component {
     }
 
     render(){
-      const { view, weather } = this.props
+      const { view, weather, handleSettngsMenu } = this.props
          return (
            <div>
              <View id="weather" className="view">
@@ -39,6 +39,9 @@ class ViewRender extends Component {
              <View id="picture" className="view">
                <PictureInfo />
              </View>
+             <View id="settings" className="view">
+               <Settings handleSettngsMenu = {handleSettngsMenu}/>
+             </View>
              <View
                id="home"
                className="view view-active"
@@ -49,7 +52,7 @@ class ViewRender extends Component {
            </div>
          );
     }
-   
+
 }
 
 export default ViewRender;
