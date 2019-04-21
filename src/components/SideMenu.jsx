@@ -55,19 +55,37 @@ export default class SideMenu extends React.Component {
     }
 
     render() {
-            return (<Menu>
-              <Button onClick={(e) => this.changeView(e, "weather")}>
-                12°C
-              </Button>
-              <Button onClick={(e) => this.changeView(e, "todo")}>
-                ToDo
-              </Button>
-              <Button onClick={(e) => this.changeView(e, "pomodoro")}>
-                Pomo
-              </Button>
-              <Button onClick={(e) => this.changeView(e, "picture")}>
-                Info
-              </Button>
-            </Menu>);
+        const { weather} = this.props;
+            return (
+              <Menu>
+                <Button
+                  onClick={e => this.changeView(e, "weather")}
+                >
+                  <ButtonDetails>
+                      <img
+                        src={weather.iconURL}
+                        alt={weather.summary}
+                        width="30"
+                        height="30"
+                      />
+                      <br />
+                    {weather.temperature}°c
+                  </ButtonDetails>
+                </Button>
+                <Button onClick={e => this.changeView(e, "todo")}>
+                  ToDo
+                </Button>
+                <Button
+                  onClick={e => this.changeView(e, "pomodoro")}
+                >
+                  Pomo
+                </Button>
+                <Button
+                  onClick={e => this.changeView(e, "picture")}
+                >
+                  Info
+                </Button>
+              </Menu>
+            );
     }
 }

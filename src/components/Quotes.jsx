@@ -5,8 +5,8 @@ import styled from "styled-components";
 //styling wrapping quote text and quote author
 const Wrapper = styled.div`
   height: 4em;
-  width: 90%;
-  margin: 0 0 0 5%;
+  width: 100%;
+  padding-bottom: 5px;
   text-align: center;
 `;
 
@@ -14,10 +14,11 @@ const Wrapper = styled.div`
 const Author = styled.div`
   color: #fff;
   font-size: 1rem;
-  opacity: 0.80;
+  opacity: 0.8;
   transform: translateY(-1.5rem);
   margin-right: 4px;
   text-shadow: 1px 1px 0px black;
+  padding-top: 5px;
 `;
 
 //styling for the quote body
@@ -29,60 +30,63 @@ const Quote = styled.div`
   border-radius: 20px;
   display: block;
   font-size: 1.125rem;
-  font-weight: 500;
+  font-weight: 600;
   user-select: text;
   margin: 0;
   transition: all 0.35s ease;
   color: rgba(255, 255, 255, 0.9);
 `;
 
-export default class Quotes extends Component {	
-		_isMounted = false;
+export default class Quotes extends Component {
+  _isMounted = false;
 
-    state = {
-      quote: "",
-			author: "",
-			isloading: true
-    };
+  state = {
+    quotes: "Take it easy — but take it.",
+    authors: "Woody Guthrie",
+    isloading: true
+  };
 
   componentDidMount() {
-		this._isMounted = true;
+    this._isMounted = true;
     this.getQuote();
   }
 
   getQuote = () => {
-		const proxy = "https://cors-anywhere.herokuapp.com/";
-		const URL = `${proxy}https://api.forismatic.com/api/1.0/?method=getQuote&lang=en&format=json`;
+    const proxy = "https://cors-anywhere.herokuapp.com/";
+    const URL = `${proxy}https://api.forismatic.com/api/1.0/?method=getQuote&lang=en&format=json`;
 
     axios
       .get(URL)
       .then(res => {
-				const data = res.data;
-				if(this._isMounted){
-					this.setState({
-						isLoading: false,
-						quote: data.quoteText,
-						author: data.quoteAuthor
-					});
-				}
+        const data = res.data;
+        const { quoteText, quoteAuthor } = data;
+        if (this._isMounted && quoteText && quoteAuthor) {
+          this.setState({
+            isLoading: false,
+            quotes: quoteText,
+            authors: quoteAuthor
+          });
+        }
       })
       .catch(err => {
         if (err) console.log(err);
       });
-	};
+  };
 
-	componentWillUnmount() {
-		this._isMounted = false;
-	}
+  componentWillUnmount() {
+    this._isMounted = false;
+  }
 
-	
   render() {
-    const { quote, author, isLoading } = this.state;
-    return (
+    const { quotes, authors, isLoading } = this.state;
+
+    return !isLoading ? (
       <Wrapper>
-        <Quote>{quote}</Quote>
-        <Author>{author}</Author>
+        <Quote>{quotes}</Quote>
+        <Author>{authors}</Author>
       </Wrapper>
+    ) : (
+      <Wrapper>Loading...</Wrapper>
     );
   }
 }
