@@ -33,6 +33,11 @@ const Button = styled.button`
     }
 `;
 
+const BottomButton = styled(Button)`
+    position: absolute;
+    bottom: 10px;
+`;
+
 const ButtonDetails = styled.div`
   text-transform: lowercase;
   font-size: 10px;
@@ -91,11 +96,11 @@ export default class SideMenu extends React.Component {
                 >
                   Info
                 </Button>
-                <Button
+                <BottomButton
                   onClick={e => this.changeView(e, "settings")}
                 >
                   Settings
-                </Button>
+                </BottomButton>
               </Menu>
             );
     }
