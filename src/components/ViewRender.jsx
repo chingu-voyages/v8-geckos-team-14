@@ -5,6 +5,7 @@ import Home from './views/Home.jsx';
 import PictureInfo from './views/PictureInfo.jsx';
 import Pomodoro from './views/Pomodoro.jsx';
 import Weather from './views/Weather.jsx';
+import Settings from './views/Settings.jsx';
 
 const View = styled.div`
     display: none;
@@ -48,6 +49,35 @@ class ViewRender extends Component {
     );
   }
 
+    render(){
+      const { view, weather, handleSettngsMenu } = this.props
+         return (
+           <div>
+             <View id="weather" className="view">
+               <Weather weather={weather} />
+             </View>
+             <View id="todo" className="view">
+               <Todo />
+             </View>
+             <View id="pomodoro" className="view">
+               <Pomodoro />
+             </View>
+             <View id="picture" className="view">
+               <PictureInfo />
+             </View>
+             <View id="settings" className="view">
+               <Settings handleSettngsMenu = {handleSettngsMenu}/>
+             </View>
+             <View
+               id="home"
+               className="view view-active"
+               data-view="home"
+             >
+               <Home />
+             </View>
+           </div>
+         );
+    }
 }
 
 export default ViewRender;
