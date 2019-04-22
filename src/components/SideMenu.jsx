@@ -91,7 +91,7 @@ export default class SideMenu extends React.Component {
                 >
                   Info
                 </Button>
-                <Button
+                <Button style={{position: "absolute", bottom: "10px"}}
                   onClick={e => this.changeView(e, "settings")}
                 >
                   Settings
