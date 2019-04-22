@@ -9,7 +9,6 @@ import Settings from './views/Settings.jsx';
 
 const View = styled.div`
     display: none;
-
     &.view-active {
         display: block;
     }
@@ -19,9 +18,36 @@ const View = styled.div`
 // All views here are hidden except default view. Views are now hidden / unhidden, instead of swapped. This ensures that we always keep the state.
 class ViewRender extends Component {
 
-    constructor(props){
-        super(props);
-    }
+  constructor(props) {
+    super(props);
+  }
+
+  render() {
+    const { view, weather } = this.props
+    return (
+      <div>
+        <View id="weather" className="view">
+          <Weather weather={weather} />
+        </View>
+        <View id="todo" className="view">
+          <Todo />
+        </View>
+        <View id="pomodoro" className="view">
+          <Pomodoro />
+        </View>
+        <View id="picture" className="view">
+          <PictureInfo />
+        </View>
+        <View
+          id="home"
+          className="view view-active"
+          data-view="home"
+        >
+          <Home />
+        </View>
+      </div>
+    );
+  }
 
     render(){
       const { view, weather, handleSettngsMenu } = this.props
@@ -52,7 +78,6 @@ class ViewRender extends Component {
            </div>
          );
     }
-
 }
 
 export default ViewRender;
