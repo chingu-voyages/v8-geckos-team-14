@@ -35,24 +35,21 @@ const QuoteWrapper = styled.div`
 // Styling for photo credits
 
 const Credits = styled.div`
-  height: 60px;
-  width: 240px;
   color: #fff;
   position: absolute;
   top: 20px;
-  right: -80px;
-  display: inline-block;
+  right: 10px;
   font-weight: 500;
   vertical-align: bottom;
-  justify-content: space-evenly;
 
 `;
 
 const Description = styled.div`
-  font-size: 0.7rem;
+  font-size: 0.8rem;
+  padding-bottom: 0.1rem;
 `
 const Link = styled.div`
-  font-size: 0.5rem;
+  font-size: 0.7rem;
 `;
 
 
@@ -63,12 +60,11 @@ const WEATHER_KEY = "eaf3c33b55f54c54af693229192003";
 // Unsplash API Access Key & Secret Key
 
 const PHOTO_KEY =
-  "a1914df4b436c9763ac6b0725eb8ba4a5ebd4244745e4c86b54ca80adc360d44";
+  "a854d621cfa5066cb3542ecd163edfafdcd9d88d0df270af430aaee8696a5874";
 
 // URL with all parameters to get access to Unsplash random photo
 
 const URL = `https://api.unsplash.com/photos/random?client_id=${PHOTO_KEY}&orientation=landscape`;
-
 //the overall component with everything on screen
 export default class Frontpage extends Component {
   constructor() {
@@ -173,20 +169,13 @@ export default class Frontpage extends Component {
         const { user, links } = data;
         const description = data.alt_description.charAt(0).toUpperCase() + data.alt_description.slice(1);
         const backgroundImage = data.urls.regular
-        if (backgroundImage && user) {
+        if (backgroundImage && user && description) {
           this.setState({
             backgroundImage: backgroundImage,
             user: user.name,
             description: description,
             links: links.html
           });
-        } else {
-          this.setState({
-            backgroundImage: null,
-            description: "No description",
-            user: "No user",
-            links: "no link"
-          })
         }
       })
       .catch(err => {

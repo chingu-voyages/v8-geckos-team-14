@@ -71,7 +71,6 @@ export default class Home extends Component {
 
     componentDidMount() {
         var h = new Date().getHours() % 12;
-        console.log(h)
         var greeting = '';
         if(h > 0 && h < 12) {
             greeting = "Good Morning,"
