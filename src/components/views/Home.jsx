@@ -10,7 +10,7 @@ const Wrapper = styled.div`
     font-weight: bold;
     padding: 10px 30px;
     border: 1px solid white;
-    background: url('../src/content/gfx/app-bg-image-blurry.jpg');
+    background: rgba(256, 256, 256, 0.1);
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
@@ -70,14 +70,14 @@ export default class Home extends Component {
     }
 
     componentDidMount() {
-        var h = new Date().getHours() % 12;
+        var h = new Date().getHours();
         var greeting = '';
         if(h > 0 && h < 12) {
             greeting = "Good Morning,"
         } else if(h >= 12 && h < 18) {
             greeting = "Good Afternoon,"
         } else {
-            greeting = "Good Evenning,"
+            greeting = "Good Evening,"
         }
 
         this.setState({

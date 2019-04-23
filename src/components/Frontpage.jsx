@@ -41,12 +41,14 @@ const Credits = styled.div`
   right: 10px;
   font-weight: 500;
   vertical-align: bottom;
+  font-weight: bold;
 
 `;
 
 const Description = styled.div`
   font-size: 0.8rem;
   padding-bottom: 0.1rem;
+  font-weight: bold;
 `
 const Link = styled.div`
   font-size: 0.7rem;
@@ -64,7 +66,7 @@ const PHOTO_KEY =
 
 // URL with all parameters to get access to Unsplash random photo
 
-const URL = `https://api.unsplash.com/photos/random?client_id=${PHOTO_KEY}&orientation=landscape`;
+const URL = `https://api.unsplash.com/photos/random?client_id=${PHOTO_KEY}`;
 //the overall component with everything on screen
 export default class Frontpage extends Component {
   constructor() {
@@ -81,7 +83,7 @@ export default class Frontpage extends Component {
       },
       backgroundImage: "",
       user: "",
-      description: "",
+      description: "No desciption",
       links: ""
     };
 
@@ -165,8 +167,9 @@ export default class Frontpage extends Component {
       .get(URL)
       .then(res => {
         const data = res.data
-        console.log(data)
-        const { user, links } = data;
+        console.log(data);
+        const { user } = data;
+        const { links } = data.user
         const description = data.alt_description.charAt(0).toUpperCase() + data.alt_description.slice(1);
         const backgroundImage = data.urls.regular
         if (backgroundImage && user && description) {
@@ -196,7 +199,7 @@ export default class Frontpage extends Component {
         </QuoteWrapper>
         <Credits>
           <Description>{description}</Description>
-          <Link><a href={links}>Photo by {user} / Unsplash</a></Link>
+          <Link><a href={`${links}?utm_source=MomentDev&utm_medium=referral`}>Photo by {user}</a><a href="https://unsplash.com/?utm_source=MomentDev&utm_medium=referral"> / Unsplash</a></Link>
         </Credits>
       </PageWrapper>
     );
