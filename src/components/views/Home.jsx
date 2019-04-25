@@ -1,6 +1,12 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
+import Time from '../Time.jsx'
 
+const MainWrapper = styled.div`
+    display: flex;
+    flex-direction: column;
+    
+`
 const Wrapper = styled.div`
     display: flex;
     justify-content: space-between;
@@ -58,11 +64,13 @@ export default class Home extends Component {
         var name = localStorage.getItem('momendevName'); // Default is null
 
         this.state = {
-            greeting: '',
-            name: name,
-            view: name ? 'name' : 'input',
-            inputVal: '',
-        }
+          greeting: "",
+          name: name,
+          view: name ? "name" : "input",
+          inputVal: "",
+          currentTime: "",
+          format: false,
+        };
 
         this.handleInputChange = this.handleInputChange.bind(this);
         this.setName = this.setName.bind(this);
@@ -84,7 +92,15 @@ export default class Home extends Component {
         this.setState({
             greeting
         })
+        setInterval(() => this.getTime(), 1000);
     }
+    
+    getTime(){
+        const { format } = this.state
+        const newT = new Date().toLocaleTimeString([], {hour: '2-digit', minute: '2-digit', hour12: format });
+        this.setState({ currentTime: newT });
+    }
+
 
     handleInputChange(e) {
         var value = e.target.value;
@@ -113,13 +129,21 @@ export default class Home extends Component {
         })
     }
 
+    changeTimeFormat = () => {
+        const { format } = this.state;
+        format === false ? this.setState({ format: !format}) : this.setState({ format: false})
+    }
+
     render() {
-        const { view, greeting, name, inputVal } = this.state;
+        const { view, greeting, name, inputVal, currentTime } = this.state;
 
         return view === "name" ? (
-            <NameWrapper hasHover onClick={this.editName}>
-                {greeting} {name}
-            </NameWrapper>
+            <MainWrapper>
+                <Time currentTime={currentTime} onClick={this.changeTimeFormat}/>
+                <NameWrapper hasHover onClick={this.editName}>
+                    {greeting} {name}
+                </NameWrapper>
+            </MainWrapper>
         ) : (
             <Wrapper>
                 <form onSubmit={this.setName}>
