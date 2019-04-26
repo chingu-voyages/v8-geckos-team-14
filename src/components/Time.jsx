@@ -10,11 +10,6 @@ const Clock = styled.div`
   justify-content: center;
 `;
 
-const Text = styled.button`
-  font-size: 20px;
-  display: none;
-`;
-
 const Icon = styled.div`
   color: white;
   font-size: 2vw;
@@ -34,7 +29,6 @@ const Time = props => {
           <Icon onClick={props.onClick}>
             <i className="far fa-clock" />
           </Icon>
-          <Text>Hello Man</Text>
         </Clock>
       </div>
     );
