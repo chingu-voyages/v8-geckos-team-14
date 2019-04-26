@@ -1,9 +1,10 @@
 const HtmlWebPackPlugin = require("html-webpack-plugin");
 const CopyPlugin = require('copy-webpack-plugin');
 const path = require('path');
+const Dotenv = require("dotenv-webpack");
 
 module.exports = {
-  entry: './src/index.js',
+  entry: "./src/index.js",
   module: {
     rules: [
       {
@@ -14,8 +15,8 @@ module.exports = {
         }
       },
       {
-        test:/\.(s*)css$/,
-        use:['style-loader','css-loader', 'sass-loader']
+        test: /\.(s*)css$/,
+        use: ["style-loader", "css-loader", "sass-loader"]
       },
       {
         test: /\.html$/,
@@ -34,9 +35,10 @@ module.exports = {
     }),
     // Copies files needed by chrome to dist folder
     new CopyPlugin([
-      { from: 'manifest.json', to: '' },
-      { from: 'src/newtab.js', to: '' },
-      { from: 'src/reset.css', to: '' }
+      { from: "manifest.json", to: "" },
+      { from: "src/newtab.js", to: "" },
+      { from: "src/reset.css", to: "" }
     ]),
+    new Dotenv()
   ]
 };

@@ -55,18 +55,9 @@ const Link = styled.div`
 `;
 
 
-// APIXU key to get weather information
+// URL with all parameters to get access to Unsplash random photo including API Access stored in .env file
 
-const WEATHER_KEY = "eaf3c33b55f54c54af693229192003";
-
-// Unsplash API Access Key & Secret Key
-
-const PHOTO_KEY =
-  "a854d621cfa5066cb3542ecd163edfafdcd9d88d0df270af430aaee8696a5874";
-
-// URL with all parameters to get access to Unsplash random photo
-
-const URL = `https://api.unsplash.com/photos/random?client_id=${PHOTO_KEY}`;
+const URL = `https://api.unsplash.com/photos/random?client_id=${process.env.UNSPLASH_API1}`;
 //the overall component with everything on screen
 export default class Frontpage extends Component {
   constructor() {
@@ -98,7 +89,7 @@ export default class Frontpage extends Component {
   getWeather(coords) {
     const { latitude, longitude } = coords;
     const numForecastDays = 5;
-    const URL = `https://api.apixu.com/v1/forecast.json?key=${WEATHER_KEY}&q=${latitude},${longitude}&days=${numForecastDays}`;
+    const URL = `https://api.apixu.com/v1/forecast.json?key=${process.env.WEATHER_KEY}&q=${latitude},${longitude}&days=${numForecastDays}`;
     axios
       .get(URL)
       .then(res => {
@@ -170,13 +161,13 @@ export default class Frontpage extends Component {
         console.log(data);
         const { user } = data;
         const { links } = data.user
-        const description = data.alt_description.charAt(0).toUpperCase() + data.alt_description.slice(1);
+        const description = data.alt_description;
         const backgroundImage = data.urls.regular
         if (backgroundImage && user && description) {
           this.setState({
             backgroundImage: backgroundImage,
             user: user.name,
-            description: description,
+            description: description.charAt(0).toUpperCase() + data.alt_description.slice(1),
             links: links.html
           });
         }
