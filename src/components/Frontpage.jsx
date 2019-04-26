@@ -57,7 +57,8 @@ const Link = styled.div`
 
 // URL with all parameters to get access to Unsplash random photo including API Access stored in .env file
 
-const URL = `https://api.unsplash.com/photos/random?client_id=${process.env.UNSPLASH_API1}`;
+const URL = `https://api.unsplash.com/photos/random?client_id=${
+  process.env.UNSPLASH_API}&query=landscape`;
 //the overall component with everything on screen
 export default class Frontpage extends Component {
   constructor() {
@@ -162,7 +163,7 @@ export default class Frontpage extends Component {
         const { user } = data;
         const { links } = data.user
         const description = data.alt_description;
-        const backgroundImage = data.urls.regular
+        const backgroundImage = data.urls.regular;
         if (backgroundImage && user && description) {
           this.setState({
             backgroundImage: backgroundImage,
@@ -181,17 +182,25 @@ export default class Frontpage extends Component {
     const { weather, backgroundImage, user, description, links } = this.state
     return (
       <PageWrapper background={backgroundImage}>
-        <SideMenu changeView={this.changeView} weather={weather}/>
+        <SideMenu changeView={this.changeView} weather={weather} />
         <Main>
           <ViewRender view={this.state.menuState} weather={weather} />
         </Main>
         <QuoteWrapper>
           <Quotes />
         </QuoteWrapper>
-        <Credits>
-          <Description>{description}</Description>
-          <Link><a href={`${links}?utm_source=MomentDev&utm_medium=referral`}>Photo by {user}</a><a href="https://unsplash.com/?utm_source=MomentDev&utm_medium=referral"> / Unsplash</a></Link>
-        </Credits>
+          <Credits>
+            <Description>{description}</Description>
+            <Link>
+              <a href={`${links}?utm_source=MomentDev&utm_medium=referral`}>
+                Photo by {user}
+              </a>
+              <a href="https://unsplash.com/?utm_source=MomentDev&utm_medium=referral">
+                {" "}
+                / Unsplash
+              </a>
+            </Link>
+          </Credits>
       </PageWrapper>
     );
   }
