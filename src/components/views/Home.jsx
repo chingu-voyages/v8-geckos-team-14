@@ -56,12 +56,14 @@ export default class Home extends Component {
         super(props);
 
         var name = localStorage.getItem('momendevName'); // Default is null
+        var greetingMenu = localStorage.getItem('greetingMenu')== null ? true : localStorage.getItem('greetingMenu');
 
         this.state = {
             greeting: '',
             name: name,
             view: name ? 'name' : 'input',
             inputVal: '',
+            greetingMenu: greetingMenu,
         }
 
         this.handleInputChange = this.handleInputChange.bind(this);
@@ -71,7 +73,7 @@ export default class Home extends Component {
 
     componentDidMount() {
         var h = new Date().getHours() % 12;
-        
+
         var greeting = '';
         if(h <= 0 && h < 12) {
             greeting = "Good Morning,"
@@ -114,10 +116,15 @@ export default class Home extends Component {
     }
 
     render() {
-        const { view, greeting, name, inputVal } = this.state;
+        const { view, greeting, name, inputVal, greetingMenu } = this.state;
 
+if (greetingMenu=='true')
+{
         return view === "name" ? (
-            <NameWrapper hasHover onClick={this.editName}>
+            <NameWrapper
+              hasHover
+              onClick={this.editName}
+            >
                 {greeting} {name}
             </NameWrapper>
         ) : (
@@ -128,5 +135,9 @@ export default class Home extends Component {
                 </form>
             </Wrapper>
         )
+      }
+      else {
+        return <div></div>
+    }
     }
 }
