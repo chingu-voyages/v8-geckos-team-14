@@ -7,7 +7,6 @@ import axios from "axios";
 import ls from 'local-storage';
 const KEY = "eaf3c33b55f54c54af693229192003";
 
-
 //stylings for the overall container of the app
 const PageWrapper = styled.div`
   width: 100vw;
@@ -151,15 +150,13 @@ export default class Frontpage extends Component {
           changeView={this.changeView}
           weather={weather}
           menuSettings={menuSettings}
-
-
         />
         <Main>
           <ViewRender
             view={this.state.menuState}
             weather={weather}
             handleSettngsMenu={this.handleSettngsMenu}
-        />
+          />
         </Main>
         <QuoteWrapper>
           <Quotes />

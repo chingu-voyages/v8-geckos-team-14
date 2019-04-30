@@ -1,0 +1,33 @@
+
+.search-input-box {
+    background: #fff;
+    min-width: 300px;
+    width: 20vw;
+    height: 4.5vh;
+    min-height: 20px;
+    border-radius: 2vw;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    border: none;
+    margin: auto;
+    color: #cecece;
+    line-height: 4vh;
+    font-size: 0.8rem;
+    letter-spacing: 2px;
+    text-align: left;
+    background-image: url(https://www.usine-digitale.fr/mediatheque/5/0/0/000305005_homePageUne/logo-google-g.jpg);
+    background-size: 2vw;
+    background-position: 10px 50%;
+    background-repeat: no-repeat;
+    padding-left: 60px;
+    padding-right: 40px;
+    margin-top: 0vh;
+}
+
+.search-form button {
+    border: 0;
+    outline: 0;
+    background: none;
+    cursor: pointer;
+
+}
