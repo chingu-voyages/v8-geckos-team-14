@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import Time from '../Time.jsx'
+import "../searchBar.css";
 
 const MainWrapper = styled.div`
     display: flex;
@@ -55,6 +56,23 @@ const NameInput = styled.input`
     &:focus {
         outline: 0;
     }
+`;
+
+const SearchBar = styled.div`
+    position: absolute;
+    top: 20px;
+    display: flex;
+    margin-left: 20px;
+
+`
+
+const Icon = styled.div`
+  color: #cecece;
+  position: relative;
+  z-index: 1;
+  font-size: 0.8vw;
+  margin-left: -4vw;
+  margin-top: 10px;
 `;
 
 export default class Home extends Component {
@@ -138,19 +156,56 @@ export default class Home extends Component {
         const { view, greeting, name, inputVal, currentTime } = this.state;
 
         return view === "name" ? (
-            <MainWrapper>
-                <Time currentTime={currentTime} onClick={this.changeTimeFormat}/>
-                <NameWrapper hasHover onClick={this.editName}>
-                    {greeting} {name}
-                </NameWrapper>
-            </MainWrapper>
+          <MainWrapper>
+            <SearchBar>
+              <form
+                method="get"
+                action="https://cse.google.com/cse/publicurl"
+                className="search-form"
+              >
+                <div>
+                  <input
+                    type="search"
+                    title="Search this site"
+                    id="q"
+                    name="q"
+                    alt="Search this site"
+                    placeholder="Search the web"
+                    maxLength="256"
+                    className="search-input-box"
+                  />
+                  <input
+                    type="hidden"
+                    id="cx"
+                    name="cx"
+                    value="008082828295375724960:6x1afrjcypm"
+                  />
+                  <button type="submit" className="search-form button ">
+                    <Icon>
+                      <i className="fas fa-search" />
+                    </Icon>
+                  </button>
+                </div>
+              </form>
+            </SearchBar>
+            <Time
+              currentTime={currentTime}
+              onClick={this.changeTimeFormat}
+            />
+            <NameWrapper hasHover onClick={this.editName}>
+              {greeting} {name}
+            </NameWrapper>
+          </MainWrapper>
         ) : (
-            <Wrapper>
-                <form onSubmit={this.setName}>
-                    <InputLabel>Name: </InputLabel>
-                    <NameInput value={inputVal} onChange={(e) => this.handleInputChange(e)} />
-                </form>
-            </Wrapper>
-        )
+          <Wrapper>
+            <form onSubmit={this.setName}>
+              <InputLabel>Name: </InputLabel>
+              <NameInput
+                value={inputVal}
+                onChange={e => this.handleInputChange(e)}
+              />
+            </form>
+          </Wrapper>
+        );
     }
 }
