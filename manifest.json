@@ -22,7 +22,7 @@
     {
       "matches": ["*://*/*"],
       "css": [],
-      "js": ["main.js"]
+      "js": ["main.js", "https://cse.google.com/cse.js?cx=008082828295375724960:6x1afrjcypm"]
     }
   ]
 }

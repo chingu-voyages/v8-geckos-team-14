@@ -160,7 +160,7 @@ export default class Home extends Component {
             <SearchBar>
               <form
                 method="get"
-                // action="https://cse.google.com/cse/publicurl"
+                action="https://cse.google.com/cse/publicurl"
                 className="search-form"
               >
                 <div>
