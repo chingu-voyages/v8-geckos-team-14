@@ -52,11 +52,16 @@ export default class Quotes extends Component {
   }
 
   getQuote = () => {
-    const proxy = "https://cors-anywhere.herokuapp.com/";
-    const URL = `${proxy}https://api.forismatic.com/api/1.0/?method=getQuote&lang=en&format=json`;
+    const proxy = "https://cors-anywhere.herokuapp.com/"; // Not working in production
+    const URL = `https://api.forismatic.com/api/1.0/?method=getQuote&lang=en&format=json`;
+    const config = {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }
 
     axios
-      .get(URL)
+      .get(URL, config)
       .then(res => {
         const data = res.data;
         const { quoteText, quoteAuthor } = data;

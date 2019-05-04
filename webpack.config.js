@@ -37,7 +37,8 @@ module.exports = {
     new CopyPlugin([
       { from: 'manifest.json', to: '' },
       { from: 'src/newtab.js', to: '' },
-      { from: 'src/reset.css', to: '' }
+      { from: 'src/reset.css', to: '' },
+      { from: 'src/content/gfx', to: 'src/content/gfx' },
     ]),
   ]
 };
