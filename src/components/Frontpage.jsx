@@ -88,9 +88,10 @@ export default class Frontpage extends Component {
 
   // Use of APIXU API with latitude and longitude query
   getWeather(coords) {
+    const proxy = "https://cors-anywhere.herokuapp.com/";
     const { latitude, longitude } = coords;
     const numForecastDays = 5;
-    const URL = `https://api.apixu.com/v1/forecast.json?key=${process.env.WEATHER_KEY}&q=${latitude},${longitude}&days=${numForecastDays}`;
+    const URL = `${proxy}https://api.apixu.com/v1/forecast.json?key=${process.env.WEATHER_KEY}&q=${latitude},${longitude}&days=${numForecastDays}`;
     axios
       .get(URL)
       .then(res => {
