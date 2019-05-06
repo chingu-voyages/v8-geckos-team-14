@@ -13,7 +13,7 @@ This Website/Extension is supposed to help with daily tasks like writing notes a
 
 ## Deployment
 
-You can view our website live under the following [Link]() or you can find an extension in Chrome.
+You can view our website live under the following [Link](https://momendev.herokuapp.com) or you can find an extension in Chrome.
 
 ## Built With
 
