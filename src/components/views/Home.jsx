@@ -1,6 +1,13 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
+import Time from '../Time.jsx'
+import "../searchBar.css";
 
+const MainWrapper = styled.div`
+    display: flex;
+    flex-direction: column;
+    
+`
 const Wrapper = styled.div`
     display: flex;
     justify-content: space-between;
@@ -51,6 +58,23 @@ const NameInput = styled.input`
     }
 `;
 
+const SearchBar = styled.div`
+    position: absolute;
+    top: 20px;
+    display: flex;
+    margin-left: 20px;
+
+`
+
+const Icon = styled.div`
+  color: #cecece;
+  position: relative;
+  z-index: 1;
+  font-size: 0.8vw;
+  margin-left: -4vw;
+  margin-top: 10px;
+`;
+
 export default class Home extends Component {
     constructor(props) {
         super(props);
@@ -58,11 +82,13 @@ export default class Home extends Component {
         var name = localStorage.getItem('momendevName'); // Default is null
 
         this.state = {
-            greeting: '',
-            name: name,
-            view: name ? 'name' : 'input',
-            inputVal: '',
-        }
+          greeting: "",
+          name: name,
+          view: name ? "name" : "input",
+          inputVal: "",
+          currentTime: "",
+          format: false,
+        };
 
         this.handleInputChange = this.handleInputChange.bind(this);
         this.setName = this.setName.bind(this);
@@ -83,7 +109,15 @@ export default class Home extends Component {
         this.setState({
             greeting
         })
+        setInterval(() => this.getTime(), 1000);
     }
+    
+    getTime(){
+        const { format } = this.state
+        const newT = new Date().toLocaleTimeString([], {hour: '2-digit', minute: '2-digit', hour12: format });
+        this.setState({ currentTime: newT });
+    }
+
 
     handleInputChange(e) {
         var value = e.target.value;
@@ -112,20 +146,65 @@ export default class Home extends Component {
         })
     }
 
+    changeTimeFormat = () => {
+        const { format } = this.state;
+        format === false ? this.setState({ format: !format}) : this.setState({ format: false})
+    }
+
     render() {
-        const { view, greeting, name, inputVal } = this.state;
+        const { view, greeting, name, inputVal, currentTime } = this.state;
 
         return view === "name" ? (
+          <MainWrapper>
+            <SearchBar>
+              <form
+                method="get"
+                action="https://cse.google.com/cse/publicurl"
+                className="search-form"
+              >
+                <div>
+                  <input
+                    type="search"
+                    title="Search this site"
+                    id="q"
+                    name="q"
+                    alt="Search this site"
+                    placeholder="Search the web"
+                    maxLength="256"
+                    className="search-input-box"
+                  />
+                  <input
+                    type="hidden"
+                    id="cx"
+                    name="cx"
+                    value="008082828295375724960:6x1afrjcypm"
+                  />
+                  <button type="submit" className="search-form button ">
+                    <Icon>
+                      <i className="fas fa-search" />
+                    </Icon>
+                  </button>
+                </div>
+              </form>
+            </SearchBar>
+            <Time
+              currentTime={currentTime}
+              onClick={this.changeTimeFormat}
+            />
             <NameWrapper hasHover onClick={this.editName}>
-                {greeting} {name}
+              {greeting} {name}
             </NameWrapper>
+          </MainWrapper>
         ) : (
-            <Wrapper>
-                <form onSubmit={this.setName}>
-                    <InputLabel>Name: </InputLabel>
-                    <NameInput value={inputVal} onChange={(e) => this.handleInputChange(e)} />
-                </form>
-            </Wrapper>
-        )
+          <Wrapper>
+            <form onSubmit={this.setName}>
+              <InputLabel>Name: </InputLabel>
+              <NameInput
+                value={inputVal}
+                onChange={e => this.handleInputChange(e)}
+              />
+            </form>
+          </Wrapper>
+        );
     }
 }

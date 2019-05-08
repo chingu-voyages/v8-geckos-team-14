@@ -4,6 +4,8 @@ import SideMenu from "./SideMenu.jsx";
 import ViewRender from "./ViewRender.jsx";
 import Quotes from "./Quotes.jsx";
 import axios from "axios";
+import ls from 'local-storage';
+const KEY = "eaf3c33b55f54c54af693229192003";
 
 //stylings for the overall container of the app
 const PageWrapper = styled.div`
@@ -76,15 +78,34 @@ export default class Frontpage extends Component {
       backgroundImage: "",
       user: "",
       description: "No desciption",
-      links: ""
+      links: "",
+      menuSettings: {
+        weatherMenu: ls.get('weatherMenu')== null ? true :ls.get('weatherMenu'),
+        todoMenu: ls.get('todoMenu')== null ? true :ls.get('todoMenu'),
+        pomodoroMenu: ls.get('pomodoroMenu')== null ? true :ls.get('pomodoroMenu'),
+        pictureMenu: ls.get('pictureMenu')== null ? true :ls.get('pictureMenu')
+      }
     };
 
     this.changeView = this.changeView.bind(this);
+    this.handleSettngsMenu= this.handleSettngsMenu.bind(this);
   }
   componentDidMount() {
     this.getLocation();
     this.getBackgroundImage();
   }
+
+  handleSettngsMenu () {
+    this.setState({
+      menuSettings: {
+        ...this.state.menuSettings,
+        weatherMenu: ls.get('weatherMenu')== null ? true :ls.get('weatherMenu'),
+        todoMenu: ls.get('todoMenu')== null ? true :ls.get('todoMenu'),
+        pomodoroMenu: ls.get('pomodoroMenu')== null ? true :ls.get('pomodoroMenu'),
+        pictureMenu: ls.get('pictureMenu')== null ? true :ls.get('pictureMenu')
+      }
+  })
+  };
 
   // Use of APIXU API with latitude and longitude query
   getWeather(coords) {
@@ -160,7 +181,6 @@ export default class Frontpage extends Component {
       .get(URL)
       .then(res => {
         const data = res.data
-        console.log(data);
         const { user } = data;
         const { links } = data.user
         const description = data.alt_description;
@@ -180,12 +200,20 @@ export default class Frontpage extends Component {
   }
 
   render() {
-    const { weather, backgroundImage, user, description, links } = this.state
+    const { weather, backgroundImage, user, description, menuSettings, links } = this.state
     return (
       <PageWrapper background={backgroundImage}>
-        <SideMenu changeView={this.changeView} weather={weather} />
+        <SideMenu
+          changeView={this.changeView}
+          weather={weather}
+          menuSettings={menuSettings}
+        />
         <Main>
-          <ViewRender view={this.state.menuState} weather={weather} />
+          <ViewRender
+            view={this.state.menuState}
+            weather={weather}
+            handleSettngsMenu={this.handleSettngsMenu}
+          />
         </Main>
         <QuoteWrapper>
           <Quotes />

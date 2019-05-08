@@ -33,6 +33,11 @@ const Button = styled.button`
     }
 `;
 
+const BottomButton = styled(Button)`
+    position: absolute;
+    bottom: 10px;
+`;
+
 const ButtonDetails = styled.div`
   text-transform: lowercase;
   font-size: 10px;
@@ -55,11 +60,12 @@ export default class SideMenu extends React.Component {
     }
 
     render() {
-        const { weather} = this.props;
+        const { weather, menuSettings } = this.props;
             return (
               <Menu>
                 <Button
                   onClick={e => this.changeView(e, "weather")}
+                  style={{visibility: menuSettings.weatherMenu ? 'visible' : 'hidden' }}
                 >
                   <ButtonDetails>
                       <img
@@ -72,19 +78,29 @@ export default class SideMenu extends React.Component {
                     {weather.temperature}°c
                   </ButtonDetails>
                 </Button>
-                <Button onClick={e => this.changeView(e, "todo")}>
+                <Button
+                  onClick={e => this.changeView(e, "todo")}
+                  style={{visibility: menuSettings.todoMenu ? 'visible' : 'hidden' }}
+                >
                   ToDo
                 </Button>
                 <Button
                   onClick={e => this.changeView(e, "pomodoro")}
+                  style={{visibility: menuSettings.pomodoroMenu ? 'visible' : 'hidden' }}
                 >
                   Pomo
                 </Button>
                 <Button
                   onClick={e => this.changeView(e, "picture")}
+                  style={{visibility: menuSettings.pictureMenu ? 'visible' : 'hidden' }}
                 >
                   Info
                 </Button>
+                <BottomButton
+                  onClick={e => this.changeView(e, "settings")}
+                >
+                  Settings
+                </BottomButton>
               </Menu>
             );
     }

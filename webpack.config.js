@@ -31,13 +31,15 @@ module.exports = {
   plugins: [
     new HtmlWebPackPlugin({
       template: path.resolve(__dirname, "./src/index.html"),
-      filename: "./tab.html"
+      filename: "./tab.html",
+      favicon: "./src/content/gfx/favicon.gif"
     }),
     // Copies files needed by chrome to dist folder
     new CopyPlugin([
-      { from: "manifest.json", to: "" },
-      { from: "src/newtab.js", to: "" },
-      { from: "src/reset.css", to: "" }
+      { from: 'manifest.json', to: '' },
+      { from: 'src/newtab.js', to: '' },
+      { from: 'src/reset.css', to: '' },
+      { from: 'src/content/gfx', to: 'src/content/gfx' },
     ]),
     new Dotenv()
   ]
