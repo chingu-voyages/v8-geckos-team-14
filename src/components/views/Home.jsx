@@ -63,6 +63,7 @@ export default class Home extends Component {
         super(props);
 
         var name = localStorage.getItem('momendevName'); // Default is null
+        var greetingMenu = localStorage.getItem('greetingMenu')== null ? true : localStorage.getItem('greetingMenu');
 
         this.state = {
           greeting: "",
@@ -71,6 +72,7 @@ export default class Home extends Component {
           inputVal: "",
           currentTime: "",
           format: false,
+          greetingMenu: greetingMenu,
         };
 
         this.handleInputChange = this.handleInputChange.bind(this);
@@ -79,7 +81,8 @@ export default class Home extends Component {
     }
 
     componentDidMount() {
-        var h = new Date().getHours();
+        var h = new Date().getHours() % 12;
+
         var greeting = '';
         if(h > 0 && h < 12) {
             greeting = "Good Morning,"
@@ -135,8 +138,10 @@ export default class Home extends Component {
     }
 
     render() {
-        const { view, greeting, name, inputVal, currentTime } = this.state;
+        const { view, greeting, name, inputVal, greetingMenu, currentTime } = this.state;
 
+if (greetingMenu=='true')
+{
         return view === "name" ? (
           <MainWrapper>
             <Time
@@ -148,15 +153,16 @@ export default class Home extends Component {
             </NameWrapper>
           </MainWrapper>
         ) : (
-          <Wrapper>
-            <form onSubmit={this.setName}>
-              <InputLabel>Name: </InputLabel>
-              <NameInput
-                value={inputVal}
-                onChange={e => this.handleInputChange(e)}
-              />
-            </form>
-          </Wrapper>
-        );
+            <Wrapper>
+                <form onSubmit={this.setName}>
+                    <InputLabel>Name: </InputLabel>
+                    <NameInput value={inputVal} onChange={(e) => this.handleInputChange(e)} />
+                </form>
+            </Wrapper>
+        )
+      }
+      else {
+        return <div></div>
+    }
     }
 }
