@@ -41,10 +41,36 @@ class Settings extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-      weatherMenu: ls.get('weatherMenu')== null ? true :ls.get('weatherMenu'),
-      todoMenu: ls.get('todoMenu')== null ? true :ls.get('todoMenu'),
-      pomodoroMenu: ls.get('pomodoroMenu')== null ? true :ls.get('pomodoroMenu'),
-      pictureMenu: ls.get('pictureMenu')== null ? true :ls.get('pictureMenu')
+      weatherMenu: {
+        value: ls.get('weatherMenu')== null ? true :ls.get('weatherMenu'),
+        label: 'Show Weather'
+      },
+
+      todoMenu: {
+        value: ls.get('todoMenu')== null ? true :ls.get('todoMenu'),
+        label: 'Show Todo'
+      },
+
+      pomodoroMenu: {
+        value: ls.get('pomodoroMenu')== null ? true :ls.get('pomodoroMenu'),
+        label: 'Show Pomodoro'
+      },
+
+      pictureMenu: {
+        value: ls.get('pictureMenu')== null ? true :ls.get('pictureMenu'),
+        label: 'Show Info'
+      },
+
+      quoteMenu: {
+        value: ls.get('quoteMenu')== null ? true :ls.get('quoteMenu'),
+        label: 'Show Quote'
+      },
+
+      greetingMenu: {
+        value: ls.get('greetingMenu')== null ? true :ls.get('greetingMenu'),
+        label: 'Show Greeting'
+      },
+
     }
 
   }
@@ -60,7 +86,10 @@ class Settings extends React.Component {
     this.setState(prevState => (
       {
         ...prevState,
-        [key]: !prevState[key]
+        [key]: {
+          value: !prevState[key]['value'],
+          label: prevState[key]['label']
+        }
       }
     ));
 
@@ -77,7 +106,8 @@ class Settings extends React.Component {
 
 
   renderList = (key) => {
-    let menuItemValue = this.state[key];
+    let menuItemValue = this.state[key]['value'];
+    let menuItemLabel = this.state[key]['label'];
     return(
       <MenuSettingsLi key={key}>
         <label>
@@ -87,7 +117,7 @@ class Settings extends React.Component {
             onChange={this.toggleCheckbox}
             name={key}
           />
-          {key}
+          {menuItemLabel}
         </label>
       </MenuSettingsLi>
     )

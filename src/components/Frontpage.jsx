@@ -98,7 +98,9 @@ export default class Frontpage extends Component {
         weatherMenu: ls.get('weatherMenu')== null ? true :ls.get('weatherMenu'),
         todoMenu: ls.get('todoMenu')== null ? true :ls.get('todoMenu'),
         pomodoroMenu: ls.get('pomodoroMenu')== null ? true :ls.get('pomodoroMenu'),
-        pictureMenu: ls.get('pictureMenu')== null ? true :ls.get('pictureMenu')
+        pictureMenu: ls.get('pictureMenu')== null ? true :ls.get('pictureMenu'),
+        quoteMenu: ls.get('quoteMenu')== null ? true :ls.get('quoteMenu'),
+        greetingMenu: ls.get('greetingMenu')== null ? true :ls.get('greetingMenu')
       }
     };
 
@@ -117,7 +119,8 @@ export default class Frontpage extends Component {
         weatherMenu: ls.get('weatherMenu')== null ? true :ls.get('weatherMenu'),
         todoMenu: ls.get('todoMenu')== null ? true :ls.get('todoMenu'),
         pomodoroMenu: ls.get('pomodoroMenu')== null ? true :ls.get('pomodoroMenu'),
-        pictureMenu: ls.get('pictureMenu')== null ? true :ls.get('pictureMenu')
+        pictureMenu: ls.get('pictureMenu')== null ? true :ls.get('pictureMenu'),
+        greetingMenu: ls.get('greetingMenu')== null ? true :ls.get('greetingMenu')
       }
   })
   };
@@ -262,7 +265,9 @@ export default class Frontpage extends Component {
             handleSettngsMenu={this.handleSettngsMenu}
           />
         </Main>
-        <QuoteWrapper>
+        <QuoteWrapper
+          style={{visibility: this.state.menuSettings.quoteMenu ? 'visible' : 'hidden' }}
+        >
           <Quotes />
         </QuoteWrapper>
           <Credits>
