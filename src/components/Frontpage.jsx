@@ -6,6 +6,7 @@ import Quotes from "./Quotes.jsx";
 import axios from "axios";
 import ls from 'local-storage';
 const KEY = "eaf3c33b55f54c54af693229192003";
+import "./searchBar.css";
 
 //stylings for the overall container of the app
 const PageWrapper = styled.div`
@@ -61,6 +62,20 @@ const Link = styled.div`
 
 const URL = `https://api.unsplash.com/photos/random?client_id=${
   process.env.UNSPLASH_API}&query=landscape`;
+const SearchBar = styled.div`
+  position: absolute;
+  top: 20px;
+`;
+
+const Icon = styled.div`
+  color: #cecece;
+  position: relative;
+  z-index: 1;
+  font-size: 0.8vw;
+  margin-left: -4vw;
+  margin-top: 10px;
+`;
+
 //the overall component with everything on screen
 export default class Frontpage extends Component {
   constructor() {
@@ -208,7 +223,39 @@ export default class Frontpage extends Component {
           weather={weather}
           menuSettings={menuSettings}
         />
+
         <Main>
+          <SearchBar>
+            <form
+              method="get"
+              action="https://cse.google.com/cse/publicurl"
+              className="search-form"
+            >
+              <div>
+                <input
+                  type="search"
+                  title="Search this site"
+                  id="q"
+                  name="q"
+                  alt="Search this site"
+                  placeholder="Search the web"
+                  maxLength="256"
+                  className="search-input-box"
+                />
+                <input
+                  type="hidden"
+                  id="cx"
+                  name="cx"
+                  value="008082828295375724960:6x1afrjcypm"
+                />
+                <button type="submit" className="search-form button ">
+                  <Icon>
+                    <i className="fas fa-search" />
+                  </Icon>
+                </button>
+              </div>
+            </form>
+          </SearchBar>
           <ViewRender
             view={this.state.menuState}
             weather={weather}
