@@ -13,7 +13,7 @@ const PageWrapper = styled.div`
   width: 100vw;
   min-height: 100vh;
   overflow-x: hidden;
-  background: url("../src/content/gfx/app-bg-image.jpg");
+  background: ${props => `url(${props.background})`};
   background-size: cover;
   background-position: center;
   display: flex;
@@ -35,6 +35,33 @@ const QuoteWrapper = styled.div`
   bottom: 20px;
 `;
 
+// Styling for photo credits
+
+const Credits = styled.div`
+  color: #fff;
+  position: absolute;
+  top: 20px;
+  right: 10px;
+  font-weight: 500;
+  vertical-align: bottom;
+  font-weight: bold;
+
+`;
+
+const Description = styled.div`
+  font-size: 0.8rem;
+  padding-bottom: 0.1rem;
+  font-weight: bold;
+`
+const Link = styled.div`
+  font-size: 0.7rem;
+`;
+
+
+// URL with all parameters to get access to Unsplash random photo including API Access stored in .env file
+
+const URL = `https://api.unsplash.com/photos/random?client_id=${
+  process.env.UNSPLASH_API}&query=landscape`;
 const SearchBar = styled.div`
   position: absolute;
   top: 20px;
@@ -63,6 +90,10 @@ export default class Frontpage extends Component {
         cityName: "",
         isLoading: false,
       },
+      backgroundImage: "",
+      user: "",
+      description: "No desciption",
+      links: "",
       menuSettings: {
         weatherMenu: ls.get('weatherMenu')== null ? true :ls.get('weatherMenu'),
         todoMenu: ls.get('todoMenu')== null ? true :ls.get('todoMenu'),
@@ -76,6 +107,7 @@ export default class Frontpage extends Component {
   }
   componentDidMount() {
     this.getLocation();
+    this.getBackgroundImage();
   }
 
   handleSettngsMenu () {
@@ -92,9 +124,10 @@ export default class Frontpage extends Component {
 
   // Use of APIXU API with latitude and longitude query
   getWeather(coords) {
+    const proxy = "https://cors-anywhere.herokuapp.com/";
     const { latitude, longitude } = coords;
     const numForecastDays = 5;
-    const URL = `https://api.apixu.com/v1/forecast.json?key=${KEY}&q=${latitude},${longitude}&days=${numForecastDays}`;
+    const URL = `${proxy}https://api.apixu.com/v1/forecast.json?key=${process.env.WEATHER_KEY}&q=${latitude},${longitude}&days=${numForecastDays}`;
     axios
       .get(URL)
       .then(res => {
@@ -157,10 +190,34 @@ export default class Frontpage extends Component {
     }
   }
 
+  // Function to fetch images from Unsplash API
+  getBackgroundImage = () => {
+    axios
+      .get(URL)
+      .then(res => {
+        const data = res.data
+        const { user } = data;
+        const { links } = data.user
+        const description = data.alt_description;
+        const backgroundImage = data.urls.regular;
+        if (backgroundImage && user && description) {
+          this.setState({
+            backgroundImage: backgroundImage,
+            user: user.name,
+            description: description.charAt(0).toUpperCase() + data.alt_description.slice(1),
+            links: links.html
+          });
+        }
+      })
+      .catch(err => {
+        if (err) console.log(`Unable to fetch API see below${err}`);
+      });
+  }
+
   render() {
-    const { weather, menuSettings } = this.state
+    const { weather, backgroundImage, user, description, menuSettings, links } = this.state
     return (
-      <PageWrapper>
+      <PageWrapper background={backgroundImage}>
         <SideMenu
           changeView={this.changeView}
           weather={weather}
@@ -208,7 +265,20 @@ export default class Frontpage extends Component {
         <QuoteWrapper>
           <Quotes />
         </QuoteWrapper>
+          <Credits>
+            <Description>{description}</Description>
+            <Link>
+              <a href={`${links}?utm_source=MomentDev&utm_medium=referral`}>
+                Photo by {user}
+              </a>
+              <a href="https://unsplash.com/?utm_source=MomentDev&utm_medium=referral">
+                {" "}
+                / Unsplash
+              </a>
+            </Link>
+          </Credits>
       </PageWrapper>
     );
   }
 }
+

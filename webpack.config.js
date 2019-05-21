@@ -1,9 +1,10 @@
 const HtmlWebPackPlugin = require("html-webpack-plugin");
 const CopyPlugin = require('copy-webpack-plugin');
 const path = require('path');
+const Dotenv = require("dotenv-webpack");
 
 module.exports = {
-  entry: './src/index.js',
+  entry: "./src/index.js",
   module: {
     rules: [
       {
@@ -14,8 +15,8 @@ module.exports = {
         }
       },
       {
-        test:/\.(s*)css$/,
-        use:['style-loader','css-loader', 'sass-loader']
+        test: /\.(s*)css$/,
+        use: ["style-loader", "css-loader", "sass-loader"]
       },
       {
         test: /\.html$/,
@@ -40,5 +41,6 @@ module.exports = {
       { from: 'src/reset.css', to: '' },
       { from: 'src/content/gfx', to: 'src/content/gfx' },
     ]),
+    new Dotenv()
   ]
 };
