@@ -26,7 +26,7 @@ This was a learning Project, so we don't really need any.
 
 ## Authors
 
-* **Fabian Starke** - *Weather, Quotes and Searchbar* - [fabianstarke](https://github.com/fabianstarke)
+* **Fabian Starke** - *Weather, Quotes, background, and Searchbar* - [fabianstarke](https://github.com/fabianstarke)
 * **Marie** - *Settings and Components* - [marie0901](https://github.com/marie0901)
 * **Oleksandr Malakhov** - *Project Lead and Pomodoro* - [Alexever17](https://github.com/Alexever17)
 * **Soren** - *Set-up and Components* - [Soreg](https://github.com/Soreg)
