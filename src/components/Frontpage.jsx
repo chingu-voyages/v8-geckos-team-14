@@ -5,7 +5,7 @@ import ViewRender from "./ViewRender.jsx";
 import Quotes from "./Quotes.jsx";
 import axios from "axios";
 import ls from 'local-storage';
-const KEY = "eaf3c33b55f54c54af693229192003";
+
 import "./searchBar.css";
 
 //stylings for the overall container of the app
