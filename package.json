@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node server.js",
-    "build": "webpack -pproduction",
+    "build": "webpack -p",
     "dev": "webpack-dev-server --mode development --open-page index.html --watch",
     "heroku-postbuild": "npm run build"
   },

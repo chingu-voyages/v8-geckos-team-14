@@ -1,6 +1,5 @@
 const HtmlWebPackPlugin = require("html-webpack-plugin");
 const CopyPlugin = require('copy-webpack-plugin');
-const path = require('path');
 const Dotenv = require("dotenv-webpack");
 
 module.exports = {
@@ -30,7 +29,7 @@ module.exports = {
   },
   plugins: [
     new HtmlWebPackPlugin({
-      template: path.resolve(__dirname, "./src/index.html"),
+      template: "./src/index.html",
       filename: "./index.html",
       favicon: "./src/content/gfx/favicon.gif"
     }),
