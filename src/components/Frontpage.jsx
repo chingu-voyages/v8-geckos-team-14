@@ -108,7 +108,7 @@ export default class Frontpage extends Component {
     this.handleSettngsMenu= this.handleSettngsMenu.bind(this);
   }
   componentDidMount() {
-    this.getLocation();
+    // this.getLocation(); // Disabled due to API changes
     this.getBackgroundImage();
   }
 

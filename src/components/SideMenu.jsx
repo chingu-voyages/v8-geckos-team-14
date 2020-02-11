@@ -60,10 +60,10 @@ export default class SideMenu extends React.Component {
     }
 
     render() {
-        const { weather, menuSettings } = this.props;
+        const { menuSettings } = this.props;
             return (
               <Menu>
-                <Button
+                {/* <Button
                   onClick={e => this.changeView(e, "weather")}
                   style={{visibility: menuSettings.weatherMenu ? 'visible' : 'hidden' }}
                 >
@@ -77,7 +77,7 @@ export default class SideMenu extends React.Component {
                       <br />
                     {weather.temperature}°c
                   </ButtonDetails>
-                </Button>
+                </Button> */}
                 <Button
                   onClick={e => this.changeView(e, "todo")}
                   style={{visibility: menuSettings.todoMenu ? 'visible' : 'hidden' }}
