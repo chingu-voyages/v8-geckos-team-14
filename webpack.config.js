@@ -31,7 +31,7 @@ module.exports = {
   plugins: [
     new HtmlWebPackPlugin({
       template: path.resolve(__dirname, "./src/index.html"),
-      filename: "./tab.html",
+      filename: "./index.html",
       favicon: "./src/content/gfx/favicon.gif"
     }),
     // Copies files needed by chrome to dist folder
