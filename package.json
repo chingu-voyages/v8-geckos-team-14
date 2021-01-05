@@ -43,7 +43,7 @@
   "moment": "^2.24.0",
   "local-storage": "^1.4.2",
   "dependencies": {
-    "axios": "^0.18.1",
+    "axios": "^0.21.1",
     "dotenv-webpack": "^1.7.0",
     "local-storage": "^1.4.2",
     "moment": "^2.24.0"
